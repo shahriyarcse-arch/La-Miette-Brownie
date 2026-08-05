@@ -1,19 +1,23 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 interface PreloaderProps {
   onComplete?: () => void;
 }
 
 export function Preloader({ onComplete }: PreloaderProps) {
-  const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const completedRef = useRef(false);
   const pageReadyRef = useRef(true);
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
+
+  const progress = useMotionValue(0);
+  const smoothProgress = useSpring(progress, { stiffness: 130, damping: 24, mass: 1 });
+  const progressWidth = useTransform(smoothProgress, (v) => `${v}%`);
+  const progressText = useTransform(smoothProgress, (v) => Math.floor(v));
 
   useEffect(() => {
     if (typeof document !== "undefined") {
@@ -49,7 +53,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
 
       // Cap at 95% if document isn't fully ready
       if (!pageReadyRef.current && target > 95) {
-        setProgress(95);
+        progress.set(95);
         animationFrameId = requestAnimationFrame(animateProgress);
         return;
       }
@@ -57,7 +61,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       if (t >= 1 && pageReadyRef.current) {
         if (!completedRef.current) {
           completedRef.current = true;
-          setProgress(100);
+          progress.set(100);
           // Wait 150ms at 100% before smooth slide up
           setTimeout(() => {
             setIsLoading(false);
@@ -67,7 +71,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
         return;
       }
 
-      setProgress(target);
+      progress.set(target);
       animationFrameId = requestAnimationFrame(animateProgress);
     };
 
@@ -78,7 +82,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       cancelAnimationFrame(animationFrameId);
       if (!completedRef.current) {
         completedRef.current = true;
-        setProgress(100);
+        progress.set(100);
         setIsLoading(false);
         onCompleteRef.current?.();
       }
@@ -90,7 +94,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       window.removeEventListener("load", markPageReady);
       document.removeEventListener("DOMContentLoaded", markPageReady);
     };
-  }, []);
+  }, [progress]);
 
   return (
     <AnimatePresence mode="wait">
@@ -111,9 +115,9 @@ export function Preloader({ onComplete }: PreloaderProps) {
 
           {/* Top Progress Bar */}
           <div className="absolute top-0 left-0 w-full h-[3px] bg-[#221B12]/10 z-30">
-            <div
-              className="h-full bg-gradient-to-r from-[#B06A2C] via-[#D9A441] to-[#221B12] transition-all duration-150 ease-out"
-              style={{ width: `${progress}%` }}
+            <motion.div
+              className="h-full bg-gradient-to-r from-[#B06A2C] via-[#D9A441] to-[#221B12]"
+              style={{ width: progressWidth, willChange: "width" }}
             />
           </div>
 
@@ -204,11 +208,11 @@ export function Preloader({ onComplete }: PreloaderProps) {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="font-serif font-bold text-right leading-none select-none tracking-tight shrink-0"
             >
-              <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-[#B06A2C] font-bold">
-                {progress}
-                <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif italic text-[#221B12]/75 ml-0.5 sm:ml-1">
-                  %
-                </span>
+              <motion.span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-[#B06A2C] font-bold">
+                {progressText}
+              </motion.span>
+              <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif italic text-[#221B12]/75 ml-0.5 sm:ml-1">
+                %
               </span>
             </motion.div>
           </div>
