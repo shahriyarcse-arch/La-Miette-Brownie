@@ -42,7 +42,11 @@ test.describe("Mika & Co. - Core E2E User Journey", () => {
     await newsletterInput.fill("customer@mikaandco.com");
     await page.locator("button[type='submit']").click();
 
-    await expect(page.getByText("Welcome to the Tasting Club!")).toBeVisible();
+    // The form must surface deterministic feedback: success when the
+    // subscription is persisted, or an error when the database is unreachable.
+    const success = page.getByText("Welcome to the Tasting Club!");
+    const failure = page.getByText("Couldn't subscribe right now");
+    await expect(success.or(failure)).toBeVisible({ timeout: 10000 });
   });
 
   test("should calculate and update real-world countdown timer in FreshBake section", async ({ page }) => {

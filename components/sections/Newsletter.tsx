@@ -10,13 +10,22 @@ import { subscribeNewsletter } from "@/lib/db-actions";
 export function Newsletter() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [subscribeError, setSubscribeError] = useState(false);
+  const [isSubscribing, setIsSubscribing] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (!email || isSubscribing) return;
+    setIsSubscribing(true);
+    setSubscribeError(false);
+
+    const result = await subscribeNewsletter(email);
+    if (result.success) {
       setSubmitted(true);
-      await subscribeNewsletter(email);
+    } else {
+      setSubscribeError(true);
     }
+    setIsSubscribing(false);
   };
 
   return (
@@ -63,22 +72,32 @@ export function Newsletter() {
               <span>Welcome to the Tasting Club! Check your inbox for a sweet surprise.</span>
             </motion.div>
           ) : (
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto relative z-10"
-            >
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address..."
-                className="w-full px-5 py-3.5 rounded-full bg-[#F7F1E5]/10 border border-[#F7F1E5]/20 text-[#F7F1E5] placeholder-[#F7F1E5]/50 focus:outline-none focus:border-[#D9A441] focus:ring-2 focus:ring-[#D9A441]/30 transition-all text-sm"
-              />
-              <MagneticButton variant="secondary" type="submit" className="w-full sm:w-auto shrink-0">
-                <span>Subscribe</span>
-              </MagneticButton>
-            </form>
+            <div className="space-y-3 relative z-10">
+              {subscribeError && (
+                <p
+                  role="alert"
+                  className="text-xs font-mono text-amber-300 bg-amber-500/10 border border-amber-500/30 rounded-full px-4 py-2 max-w-md mx-auto"
+                >
+                  Couldn't subscribe right now — please try again later.
+                </p>
+              )}
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto"
+              >
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email address..."
+                  className="w-full px-5 py-3.5 rounded-full bg-[#F7F1E5]/10 border border-[#F7F1E5]/20 text-[#F7F1E5] placeholder-[#F7F1E5]/50 focus:outline-none focus:border-[#D9A441] focus:ring-2 focus:ring-[#D9A441]/30 transition-all text-sm"
+                />
+                <MagneticButton variant="secondary" type="submit" className="w-full sm:w-auto shrink-0">
+                  <span>{isSubscribing ? "Subscribing..." : "Subscribe"}</span>
+                </MagneticButton>
+              </form>
+            </div>
           )}
         </motion.div>
       </div>
