@@ -78,19 +78,24 @@ export function Newsletter() {
                   role="alert"
                   className="text-xs font-mono text-amber-300 bg-amber-500/10 border border-amber-500/30 rounded-full px-4 py-2 max-w-md mx-auto"
                 >
-                  Couldn't subscribe right now — please try again later.
+                  Couldn&apos;t subscribe right now — please try again later.
                 </p>
               )}
               <form
                 onSubmit={handleSubmit}
                 className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto"
               >
+                <label htmlFor="newsletter-email" className="sr-only">
+                  Email address for the tasting club
+                </label>
                 <input
+                  id="newsletter-email"
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email address..."
+                  autoComplete="email"
                   className="w-full px-5 py-3.5 rounded-full bg-[#F7F1E5]/10 border border-[#F7F1E5]/20 text-[#F7F1E5] placeholder-[#F7F1E5]/50 focus:outline-none focus:border-[#D9A441] focus:ring-2 focus:ring-[#D9A441]/30 transition-all text-sm"
                 />
                 <MagneticButton variant="secondary" type="submit" className="w-full sm:w-auto shrink-0">

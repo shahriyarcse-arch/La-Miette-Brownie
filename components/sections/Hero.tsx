@@ -1,26 +1,26 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import { SIGNATURE_PRODUCTS } from "@/lib/constants";
 
 interface HeroProps {
-  onExploreProducts?: () => void;
   isPreloaderDone?: boolean;
 }
 
+// Ticker reads the real catalog so prices never drift from the storefront
 const HERO_PRODUCTS = [
-  { name: "Belgian Dark Chocolate Fudgy Brownie", price: "৳450", badge: "BEST SELLER" },
-  { name: "Basque Burnt Caramel Cheesecake", price: "৳650", badge: "TOP RATED ★ 4.9" },
-  { name: "Nutella Sea Salt Fudgy Brownie", price: "৳480", badge: "POPULAR" },
-  { name: "Classic Silk Caramel Custard Pudding", price: "৳380", badge: "FRESH BATCH" },
-  { name: "NYC Chunky Choco Chip Cookie", price: "৳320", badge: "FRESHLY BAKED" },
-  { name: "Valrhona Dark Ganache Cake", price: "৳1,200", badge: "SIGNATURE" },
+  ...SIGNATURE_PRODUCTS.map((p) => ({
+    name: p.name,
+    price: p.price,
+    badge: p.badge || p.category.toUpperCase(),
+  })),
   { name: "🚚 SAME DAY EXPRESS DELIVERY ACROSS DHAKA", price: "", badge: "DAILY FRESH" },
   { name: "✨ 100% PURE BUTTER & BELGIAN CHOCOLATE", price: "", badge: "PREMIUM INGREDIENTS" },
 ];
 
-export function Hero({ onExploreProducts, isPreloaderDone = true }: HeroProps) {
+export function Hero({ isPreloaderDone = true }: HeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const CUBIC_EASE = [0.22, 1, 0.36, 1] as const;
@@ -117,6 +117,7 @@ export function Hero({ onExploreProducts, isPreloaderDone = true }: HeroProps) {
           loop
           muted
           playsInline
+          aria-hidden="true"
           poster="/videos/hero-poster.jpg"
           className="w-full h-full object-cover object-center transform-gpu"
         >
@@ -147,7 +148,7 @@ export function Hero({ onExploreProducts, isPreloaderDone = true }: HeroProps) {
           className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.25rem] font-serif font-bold text-white tracking-tight leading-[1.1] drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)] max-w-4xl mx-auto"
         >
           <span className="block text-[#FAF6EE]">Freshly Baked Desserts,</span>
-          <em className="block not-italic text-[#E8AB48] font-serif font-semibold italic mt-1 sm:mt-2 drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
+          <em className="block text-[#E8AB48] font-serif font-semibold mt-1 sm:mt-2 drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
             Delivered Daily Across Dhaka.
           </em>
         </motion.h1>
@@ -170,6 +171,7 @@ export function Hero({ onExploreProducts, isPreloaderDone = true }: HeroProps) {
           className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
         >
           <button
+            type="button"
             onClick={() => {
               const el = document.getElementById("signature");
               if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -181,6 +183,7 @@ export function Hero({ onExploreProducts, isPreloaderDone = true }: HeroProps) {
           </button>
 
           <button
+            type="button"
             onClick={() => {
               const el = document.getElementById("products");
               if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -193,15 +196,15 @@ export function Hero({ onExploreProducts, isPreloaderDone = true }: HeroProps) {
       </div>
 
       {/* Right Luxury Glassmorphic Scroll Indicator Capsule */}
-      <motion.div
+      <motion.button
         variants={scrollCueVariants}
         initial="hidden"
         animate={animateState}
+        type="button"
         onClick={() => {
           const el = document.getElementById("signature");
           if (el) el.scrollIntoView({ behavior: "smooth" });
         }}
-        role="button"
         aria-label="Scroll to Best Sellers"
         className="hidden lg:flex absolute right-6 sm:right-8 top-1/2 -translate-y-1/2 flex-col items-center gap-4 z-10 px-3 py-6 rounded-full bg-[#18120C]/40 backdrop-blur-xl border border-[#E8AB48]/30 shadow-[0_10px_30px_rgba(0,0,0,0.5)] cursor-pointer hover:border-[#E8AB48] hover:bg-[#18120C]/70 hover:shadow-[0_0_25px_rgba(232,171,72,0.35)] transition-all duration-500 group select-none"
       >
@@ -229,7 +232,7 @@ export function Hero({ onExploreProducts, isPreloaderDone = true }: HeroProps) {
         >
           <ChevronDown className="w-3.5 h-3.5 text-[#E8AB48] group-hover:scale-125 transition-transform" />
         </motion.div>
-      </motion.div>
+      </motion.button>
 
       {/* Bottom Ticker Marquee Carousel Strip */}
       <motion.div

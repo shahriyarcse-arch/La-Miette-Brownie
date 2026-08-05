@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { INSTAGRAM_POSTS } from "@/lib/constants";
 import { Instagram, Heart, X } from "lucide-react";
@@ -8,8 +8,42 @@ import Image from "next/image";
 
 export function InstagramGallery() {
   const [selectedPost, setSelectedPost] = useState<typeof INSTAGRAM_POSTS[0] | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
 
   const QUAD_POSTS = [...INSTAGRAM_POSTS, ...INSTAGRAM_POSTS];
+
+  const openPost = (post: typeof INSTAGRAM_POSTS[0]) => {
+    lastFocusedRef.current = document.activeElement as HTMLElement | null;
+    setSelectedPost(post);
+  };
+
+  const closePost = () => {
+    setSelectedPost(null);
+  };
+
+  useEffect(() => {
+    if (!selectedPost) return;
+    closeButtonRef.current?.focus();
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closePost();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      lastFocusedRef.current?.focus();
+    };
+  }, [selectedPost]);
+
+  const handleCardKeyDown = (
+    e: React.KeyboardEvent,
+    post: typeof INSTAGRAM_POSTS[0]
+  ) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      openPost(post);
+    }
+  };
 
   return (
     <section className="py-24 bg-[#F7F1E5] text-[#221B12] relative overflow-hidden">
@@ -52,9 +86,13 @@ export function InstagramGallery() {
             {QUAD_POSTS.map((post, idx) => (
               <div
                 key={`primary-${post.id}-${idx}`}
-                onClick={() => setSelectedPost(post)}
+                onClick={() => openPost(post)}
+                onKeyDown={(e) => handleCardKeyDown(e, post)}
+                role="button"
+                tabIndex={0}
+                aria-label={`View Instagram post: ${post.caption}`}
                 data-cursor="INSTA"
-                className="group relative w-[280px] sm:w-[320px] md:w-[360px] h-[340px] md:h-[400px] rounded-3xl overflow-hidden cursor-pointer shrink-0 border border-[#221B12]/10 bg-[#221B12] shadow-xl transition-all duration-300 hover:-translate-y-1.5"
+                className="group relative w-[280px] sm:w-[320px] md:w-[360px] h-[340px] md:h-[400px] rounded-3xl overflow-hidden cursor-pointer shrink-0 border border-[#221B12]/10 bg-[#221B12] shadow-xl transition-all duration-300 hover:-translate-y-1.5 focus-visible:outline-2 focus-visible:outline-offset-4"
               >
                 <Image
                   src={post.image}
@@ -125,29 +163,34 @@ export function InstagramGallery() {
         </div>
       </div>
 
-      {/* Lightbox Modal */}
-      <AnimatePresence>
-        {selectedPost && (
-          <div
-            className="fixed inset-0 z-[10000] bg-[#221B12]/80 backdrop-blur-xl flex items-center justify-center p-6"
-            onClick={() => setSelectedPost(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative max-w-lg w-full rounded-3xl bg-[#18120C] text-[#FAF6EE] border border-[#E8AB48]/50 overflow-visible shadow-2xl p-6"
-            >
-              {/* High-Contrast Luxury Close Button */}
-              <button
-                onClick={() => setSelectedPost(null)}
-                className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 w-10 h-10 rounded-full bg-[#18120C] text-[#E8AB48] border-2 border-[#E8AB48] shadow-[0_4px_20px_rgba(0,0,0,0.6)] hover:bg-[#E8AB48] hover:text-[#18120C] hover:scale-110 transition-all duration-300 flex items-center justify-center z-50 cursor-pointer"
-                aria-label="Close modal"
+          {/* Lightbox Modal */}
+          <AnimatePresence>
+            {selectedPost && (
+              <div
+                className="fixed inset-0 z-[10000] bg-[#221B12]/80 backdrop-blur-xl flex items-center justify-center p-6"
+                onClick={closePost}
               >
-                <X className="w-5 h-5 stroke-[2.5]" />
-              </button>
+                <div
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label={`Instagram post: ${selectedPost.caption}`}
+                  className="relative max-w-lg w-full rounded-3xl bg-[#18120C] text-[#FAF6EE] border border-[#E8AB48]/50 overflow-visible shadow-2xl p-6"
+                >
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                {/* High-Contrast Luxury Close Button */}
+                <button
+                  ref={closeButtonRef}
+                  onClick={closePost}
+                  className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 w-10 h-10 rounded-full bg-[#18120C] text-[#E8AB48] border-2 border-[#E8AB48] shadow-[0_4px_20px_rgba(0,0,0,0.6)] hover:bg-[#E8AB48] hover:text-[#18120C] hover:scale-110 transition-all duration-300 flex items-center justify-center z-50 cursor-pointer"
+                  aria-label="Close modal"
+                >
+                  <X className="w-5 h-5 stroke-[2.5]" />
+                </button>
 
               <div className="relative h-72 w-full rounded-2xl overflow-hidden mb-4 bg-[#221B12]">
                 <Image
@@ -168,8 +211,9 @@ export function InstagramGallery() {
                   {selectedPost.caption}
                 </p>
               </div>
-            </motion.div>
-          </div>
+                  </motion.div>
+                </div>
+              </div>
         )}
       </AnimatePresence>
       </div>

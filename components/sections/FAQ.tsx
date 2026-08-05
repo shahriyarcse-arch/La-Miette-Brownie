@@ -45,7 +45,11 @@ export function FAQ() {
                 className="rounded-2xl bg-white border border-[#221B12]/5 shadow-[0_4px_20px_rgb(34,27,18,0.05)] hover:shadow-[0_8px_30px_rgb(34,27,18,0.08)] overflow-hidden transition-all duration-300"
               >
                 <button
+                  type="button"
                   onClick={() => toggle(faq.id)}
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-panel-${faq.id}`}
+                  id={`faq-button-${faq.id}`}
                   className="w-full p-6 text-left flex items-center justify-between gap-4 font-serif text-lg font-bold text-[#221B12] hover:text-[#B06A2C] transition-colors"
                 >
                   <span className="flex items-center gap-3">
@@ -62,6 +66,9 @@ export function FAQ() {
                 <AnimatePresence>
                   {isOpen && (
                     <motion.div
+                      id={`faq-panel-${faq.id}`}
+                      role="region"
+                      aria-labelledby={`faq-button-${faq.id}`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}

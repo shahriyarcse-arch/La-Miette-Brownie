@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { SIGNATURE_PRODUCTS, Product } from "@/lib/constants";
-import { MagneticButton } from "@/components/ui/MagneticButton";
 import { Star, Plus, Check } from "lucide-react";
 import Image from "next/image";
 
@@ -17,12 +16,35 @@ export function SignatureCollection({
   onAddToCart,
 }: SignatureCollectionProps) {
   const [addedId, setAddedId] = useState<string | null>(null);
+  const resetTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (resetTimerRef.current !== null) {
+        window.clearTimeout(resetTimerRef.current);
+      }
+    };
+  }, []);
 
   const handleAdd = (e: React.MouseEvent, product: Product) => {
     e.stopPropagation();
     onAddToCart(product);
     setAddedId(product.id);
-    setTimeout(() => setAddedId(null), 1500);
+    if (resetTimerRef.current !== null) {
+      window.clearTimeout(resetTimerRef.current);
+    }
+    resetTimerRef.current = window.setTimeout(() => setAddedId(null), 1500);
+  };
+
+  const handleSelect = (product: Product) => {
+    onSelectProduct(product);
+  };
+
+  const handleCardKeyDown = (e: React.KeyboardEvent, product: Product) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onSelectProduct(product);
+    }
   };
 
   return (
@@ -60,9 +82,12 @@ export function SignatureCollection({
           {SIGNATURE_PRODUCTS.map((product) => (
             <div
               key={product.id}
-              onClick={() => onSelectProduct(product)}
+              onClick={() => handleSelect(product)}
+              onKeyDown={(e) => handleCardKeyDown(e, product)}
+              role="button"
+              tabIndex={0}
               data-cursor="VIEW"
-              className="group relative rounded-3xl bg-white border border-[#221B12]/5 shadow-[0_8px_30px_rgb(34,27,18,0.06)] overflow-hidden hover:border-[#B06A2C]/40 hover:shadow-[0_20px_40px_rgb(176,106,44,0.12)] transition-all duration-500 flex flex-col justify-between cursor-pointer"
+              className="group relative rounded-3xl bg-white border border-[#221B12]/5 shadow-[0_8px_30px_rgb(34,27,18,0.06)] overflow-hidden hover:border-[#B06A2C]/40 hover:shadow-[0_20px_40px_rgb(176,106,44,0.12)] transition-all duration-500 flex flex-col justify-between cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4"
             >
               {/* Image Container */}
               <div className="relative h-64 w-full overflow-hidden bg-[#221B12]/5">

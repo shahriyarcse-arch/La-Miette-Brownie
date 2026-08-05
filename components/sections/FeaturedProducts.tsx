@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ALL_PRODUCTS, Product } from "@/lib/constants";
-import { Star, Plus, Check, Filter } from "lucide-react";
+import { Star, Plus, Check } from "lucide-react";
 import Image from "next/image";
 
 interface FeaturedProductsProps {
@@ -17,6 +17,15 @@ export function FeaturedProducts({
 }: FeaturedProductsProps) {
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [addedId, setAddedId] = useState<string | null>(null);
+  const resetTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (resetTimerRef.current !== null) {
+        window.clearTimeout(resetTimerRef.current);
+      }
+    };
+  }, []);
 
   const categories = ["All", "Brownies", "Pastries", "Puddings", "Cakes", "Cookies"];
 
@@ -29,7 +38,17 @@ export function FeaturedProducts({
     e.stopPropagation();
     onAddToCart(product);
     setAddedId(product.id);
-    setTimeout(() => setAddedId(null), 1500);
+    if (resetTimerRef.current !== null) {
+      window.clearTimeout(resetTimerRef.current);
+    }
+    resetTimerRef.current = window.setTimeout(() => setAddedId(null), 1500);
+  };
+
+  const handleCardKeyDown = (e: React.KeyboardEvent, product: Product) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onSelectProduct(product);
+    }
   };
 
   return (
@@ -85,8 +104,11 @@ export function FeaturedProducts({
                 <div
                   key={product.id}
                   onClick={() => onSelectProduct(product)}
+                  onKeyDown={(e) => handleCardKeyDown(e, product)}
+                  role="button"
+                  tabIndex={0}
                   data-cursor="DETAILS"
-                  className="group rounded-3xl bg-white/80 border border-[#221B12]/10 overflow-hidden hover:border-[#B06A2C]/50 hover:shadow-xl transition-all duration-300 flex flex-col justify-between cursor-pointer"
+                  className="group rounded-3xl bg-white/80 border border-[#221B12]/10 overflow-hidden hover:border-[#B06A2C]/50 hover:shadow-xl transition-all duration-300 flex flex-col justify-between cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4"
                 >
                 {/* Image */}
                 <div className="relative h-56 w-full overflow-hidden bg-[#221B12]/5">
@@ -94,7 +116,8 @@ export function FeaturedProducts({
                     src={product.image}
                     alt={product.name}
                     fill
-                    loading="eager"
+                    loading="lazy"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#221B12]/40 via-transparent to-transparent" />
@@ -123,7 +146,7 @@ export function FeaturedProducts({
                     <button
                       onClick={(e) => handleAdd(e, product)}
                       className="p-2.5 rounded-full bg-[#221B12] text-[#F7F1E5] hover:bg-[#B06A2C] transition-colors shadow-md"
-                      aria-label="Add product"
+                      aria-label={`Add ${product.name} to basket`}
                     >
                       {addedId === product.id ? <Check className="w-4 h-4 text-emerald-400" /> : <Plus className="w-4 h-4" />}
                     </button>
