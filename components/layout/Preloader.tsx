@@ -153,15 +153,9 @@ export function Preloader({ onComplete }: PreloaderProps) {
                 className="text-[3.25rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-serif text-[#221B12] tracking-tight font-bold leading-none"
               >
                 La{" "}
-                <motion.span
-                  initial={{ opacity: 0, scale: 0.88, y: 10 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                  style={{ willChange: "transform, opacity", transform: "translateZ(0)" }}
-                  className="inline-block text-[#B06A2C] italic font-serif font-normal"
-                >
+                <span className="inline-block text-[#B06A2C] italic font-serif font-normal animate-miette-gpu">
                   Miette
-                </motion.span>{" "}
+                </span>{" "}
                 Brownie
               </motion.div>
 
