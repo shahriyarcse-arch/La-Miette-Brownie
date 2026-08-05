@@ -195,8 +195,8 @@ img, video {
   letter-spacing: 0.35em !important;
 }
 
-/* GPU-Accelerated Ultra-Smooth Miette Preloader Entrance */
-@keyframes mietteGpuEntrance {
+/* GPU-Accelerated Ultra-Smooth Brownie Preloader Entrance */
+@keyframes brownieGpuEntrance {
   0% {
     opacity: 0;
     transform: translate3d(0, 10px, 0) scale(0.86);
@@ -207,9 +207,9 @@ img, video {
   }
 }
 
-.animate-miette-gpu {
+.animate-brownie-gpu {
   opacity: 0;
-  animation: mietteGpuEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.38s forwards;
+  animation: brownieGpuEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.38s forwards;
   will-change: transform, opacity;
   backface-visibility: hidden;
   transform-style: preserve-3d;
