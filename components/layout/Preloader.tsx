@@ -156,10 +156,10 @@ export function Preloader({ onComplete }: PreloaderProps) {
                 className="text-[3.25rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-serif text-[#221B12] tracking-tight font-bold leading-none"
               >
                 La{" "}
-                Miette{" "}
-                <span className="inline-block text-[#B06A2C] italic font-serif font-normal animate-brownie-gpu">
-                  Brownie
-                </span>
+                <span className="inline-block text-[#B06A2C] italic font-serif font-normal animate-miette-gpu">
+                  Miette
+                </span>{" "}
+                Brownie
               </motion.div>
 
               {/* Gold Line Divider */}
