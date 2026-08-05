@@ -1,0 +1,88 @@
+// Mika & Co. — PostgreSQL Enterprise Prisma Schema
+// Database: PostgreSQL / Neon Tech / Local Postgres
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── 1. PRODUCTS TABLE ───────────────────────────────────────────
+model Product {
+  id          String      @id @default(cuid())
+  productId   String      @unique // e.g. "brownie-classic"
+  name        String
+  category    String      // "Brownies" | "Pastries" | "Puddings" | "Cakes" | "Cookies"
+  price       String      // e.g. "৳450"
+  numericPrice Float      @default(0)
+  description String      @db.Text
+  ingredients String[]    // Array of ingredients
+  pairing     String
+  rating      Float       @default(4.9)
+  badge       String?     // e.g. "BEST SELLER"
+  image       String
+  prepTime    String
+  calories    String
+  inStock     Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  orderItems  OrderItem[]
+}
+
+// ─── 2. ORDERS TABLE ─────────────────────────────────────────────
+model Order {
+  id            String      @id @default(cuid())
+  orderId       String      @unique // e.g. "MK-94821"
+  subtotal      String      // e.g. "1280.00"
+  numericTotal  Float       @default(0)
+  status        String      @default("Reserved") // "Reserved" | "In Oven" | "Ready For Pickup" | "Completed"
+  paymentMethod String      @default("cash_on_pickup") // "bkash" | "sslcommerz" | "nagad" | "cash_on_pickup"
+  paymentStatus String      @default("Pending") // "Pending" | "Paid" | "Failed"
+  transactionId String?
+
+  customer      Customer?
+  items         OrderItem[]
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+// ─── 3. CUSTOMER DETAILS TABLE ──────────────────────────────────
+model Customer {
+  id          String   @id @default(cuid())
+  orderId     String   @unique
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  name        String
+  phone       String
+  email       String?
+  pickupTime  String
+  notes       String?  @db.Text
+
+  createdAt   DateTime @default(now())
+}
+
+// ─── 4. ORDER ITEMS JOIN TABLE ──────────────────────────────────
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  productName String
+  price       String
+  quantity    Int      @default(1)
+}
+
+// ─── 5. NEWSLETTER SUBSCRIBERS ──────────────────────────────────
+model NewsletterSubscriber {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  subscribedAt DateTime @default(now())
+}
