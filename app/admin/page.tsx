@@ -30,10 +30,7 @@ import {
 } from "lucide-react";
 import { useCart, BakeryOrder, OrderStatus } from "@/context/CartContext";
 import { ALL_PRODUCTS, parsePrice } from "@/lib/constants";
-import { updateDatabaseOrderStatus, toggleDatabaseProductStock } from "@/lib/db-actions";
-
-// ─── Admin Passcode ──────────────────────────────────────────────
-const ADMIN_PASSCODE = process.env.NEXT_PUBLIC_ADMIN_PASSCODE || "1984";
+import { updateDatabaseOrderStatus, toggleDatabaseProductStock, deleteDatabaseOrder, verifyAdminPasscode } from "@/lib/db-actions";
 
 // ─── Order Status Pipeline ───────────────────────────────────────
 const STATUS_PIPELINE: OrderStatus[] = [
@@ -86,15 +83,22 @@ const DEFAULT_BATCHES: OvenBatch[] = [
   {
     id: "dawn",
     label: "Dawn Batch",
-    time: "07:00 AM",
+    time: "07:30 AM",
     description: "Sourdough loaves, croissants, brioches",
+    active: true,
+  },
+  {
+    id: "warm",
+    label: "Warm Loaves",
+    time: "08:30 AM",
+    description: "Baguettes, focaccia, tartlets",
     active: true,
   },
   {
     id: "noon",
     label: "Noon Oven",
     time: "11:30 AM",
-    description: "Baguettes, focaccia, tartlets",
+    description: "Brownies, cheesecakes, cookies",
     active: true,
   },
   {
@@ -117,11 +121,27 @@ const TABS: { id: AdminTab; label: string; icon: React.ReactNode }[] = [
 ];
 
 // ─── Utility: CSV Export ─────────────────────────────────────────
+function csvCell(value: string): string {
+  // Neutralize spreadsheet formula injection (=, +, -, @) and escape quotes
+  const sanitized = /^[=+\-@]/.test(value) ? `'${value}` : value;
+  return `"${sanitized.replace(/"/g, '""')}"`;
+}
+
 function exportOrdersCsv(orders: BakeryOrder[]) {
   const header = "Order ID,Customer,Phone,Email,Pickup,Status,Subtotal,Items,Date\n";
   const rows = orders.map((o) => {
     const items = o.items.map((i) => `${i.quantity}x ${i.product.name}`).join(" | ");
-    return `${o.orderId},"${o.customer.name}","${o.customer.phone}","${o.customer.email}","${o.customer.pickupTime}",${o.status},৳${o.subtotal},"${items}",${o.createdAtISO || o.createdAt}`;
+    return [
+      csvCell(o.orderId),
+      csvCell(o.customer.name),
+      csvCell(o.customer.phone),
+      csvCell(o.customer.email || ""),
+      csvCell(o.customer.pickupTime),
+      csvCell(o.status),
+      csvCell(`৳${o.subtotal}`),
+      csvCell(items),
+      csvCell(o.createdAtISO || o.createdAt),
+    ].join(",");
   });
   const csv = header + rows.join("\n");
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -181,6 +201,11 @@ export default function AdminDashboard() {
 
       playTone(880, 0, 0.5);   // High A5 note
       playTone(1174.66, 0.15, 0.8); // High D6 gold bell note
+
+      // Release the audio context after the tones finish
+      window.setTimeout(() => {
+        ctx.close().catch(() => {});
+      }, 1500);
     } catch {
       // AudioContext blocked before user interaction
     }
@@ -208,9 +233,10 @@ export default function AdminDashboard() {
   }, []);
 
   const handleLogin = useCallback(
-    (e: React.FormEvent) => {
+    async (e: React.FormEvent) => {
       e.preventDefault();
-      if (passcodeInput === ADMIN_PASSCODE) {
+      const res = await verifyAdminPasscode(passcodeInput);
+      if (res.success) {
         setAuthenticated(true);
         setPasscodeError(false);
         try {
@@ -249,9 +275,11 @@ export default function AdminDashboard() {
 
   // ── KPI Metrics ──
   const kpis = useMemo(() => {
-    const todayStr = new Date().toISOString().slice(0, 10);
+    // "Today" is computed in the visitor's local timezone
+    const localToday = new Date().toLocaleDateString("en-CA");
     const todayOrders = orders.filter(
-      (o) => (o.createdAtISO || "").slice(0, 10) === todayStr
+      (o) =>
+        new Date(o.createdAtISO).toLocaleDateString("en-CA") === localToday
     );
     const totalRevenue = todayOrders.reduce(
       (s, o) => s + parseFloat(o.subtotal),
@@ -503,7 +531,7 @@ export default function AdminDashboard() {
           {[
             {
               label: "Today's Revenue",
-              value: `$${kpis.todayRevenue}`,
+              value: `৳${kpis.todayRevenue}`,
               icon: <DollarSign className="w-5 h-5" />,
               accent: "from-emerald-500/20 to-emerald-500/5",
               iconBg: "bg-emerald-500/15 text-emerald-400",
@@ -517,7 +545,7 @@ export default function AdminDashboard() {
             },
             {
               label: "Avg Order Value",
-              value: `$${kpis.avgOrder}`,
+              value: `৳${kpis.avgOrder}`,
               icon: <TrendingUp className="w-5 h-5" />,
               accent: "from-violet-500/20 to-violet-500/5",
               iconBg: "bg-violet-500/15 text-violet-400",
@@ -559,6 +587,8 @@ export default function AdminDashboard() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
+              role="tab"
+              aria-selected={activeTab === tab.id}
               className={`flex items-center gap-2 px-4 py-3 text-xs font-mono tracking-wide whitespace-nowrap transition-all border-b-2 -mb-px ${
                 activeTab === tab.id
                   ? "border-[#D9A441] text-[#D9A441]"
@@ -595,6 +625,7 @@ export default function AdminDashboard() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search by ID, name, or phone..."
+                    aria-label="Search orders"
                     className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F7F1E5]/5 border border-[#F7F1E5]/10 text-[#F7F1E5] placeholder-[#F7F1E5]/25 text-xs font-mono focus:outline-none focus:border-[#D9A441]/50 transition-colors"
                   />
                 </div>
@@ -714,6 +745,7 @@ export default function AdminDashboard() {
                                 <button
                                   onClick={() => {
                                     deleteOrder(order.orderId);
+                                    deleteDatabaseOrder(order.orderId);
                                     setDeleteConfirm(null);
                                   }}
                                   className="px-2.5 py-2 rounded-lg bg-red-500/15 border border-red-500/30 text-[10px] font-mono text-red-400 hover:bg-red-500/25 transition-colors"
@@ -969,7 +1001,7 @@ export default function AdminDashboard() {
                         All-Time Revenue
                       </p>
                       <p className="text-3xl font-serif font-bold text-emerald-400">
-                        $
+                        ৳
                         {orders
                           .reduce((s, o) => s + parseFloat(o.subtotal), 0)
                           .toFixed(2)}
@@ -1008,10 +1040,11 @@ export default function AdminDashboard() {
                           const pct =
                             (data.revenue / analyticsData.maxRevenue) * 100;
                           const colors: Record<string, string> = {
-                            Viennoiserie: "bg-amber-400",
-                            "Artisanal Bread": "bg-orange-400",
-                            Patisserie: "bg-pink-400",
-                            Specialty: "bg-emerald-400",
+                            Brownies: "bg-amber-400",
+                            Pastries: "bg-orange-400",
+                            Puddings: "bg-pink-400",
+                            Cakes: "bg-emerald-400",
+                            Cookies: "bg-sky-400",
                           };
                           return (
                             <div key={category}>
@@ -1020,7 +1053,7 @@ export default function AdminDashboard() {
                                   {category}
                                 </span>
                                 <span className="text-xs font-mono text-[#D9A441]">
-                                  ${data.revenue.toFixed(2)} · {data.count}{" "}
+                                  ৳{data.revenue.toFixed(2)} · {data.count}{" "}
                                   sold
                                 </span>
                               </div>
@@ -1196,7 +1229,7 @@ export default function AdminDashboard() {
                   Order Total
                 </span>
                 <span className="text-xl font-serif font-bold text-[#D9A441]">
-                  ${selectedOrder.subtotal}
+                  ৳{selectedOrder.subtotal}
                 </span>
               </div>
 
@@ -1207,6 +1240,7 @@ export default function AdminDashboard() {
                     const next = getNextStatus(selectedOrder.status);
                     if (next) {
                       updateOrderStatus(selectedOrder.orderId, next);
+                      updateDatabaseOrderStatus(selectedOrder.orderId, next);
                       setSelectedOrder({
                         ...selectedOrder,
                         status: next,

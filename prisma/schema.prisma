@@ -31,6 +31,9 @@ model Product {
   updatedAt   DateTime    @updatedAt
 
   orderItems  OrderItem[]
+
+  @@index([category])
+  @@index([inStock])
 }
 
 // ─── 2. ORDERS TABLE ─────────────────────────────────────────────
@@ -49,6 +52,10 @@ model Order {
 
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([paymentStatus])
 }
 
 // ─── 3. CUSTOMER DETAILS TABLE ──────────────────────────────────
@@ -64,6 +71,9 @@ model Customer {
   notes       String?  @db.Text
 
   createdAt   DateTime @default(now())
+
+  @@index([phone])
+  @@index([name])
 }
 
 // ─── 4. ORDER ITEMS JOIN TABLE ──────────────────────────────────
@@ -78,6 +88,9 @@ model OrderItem {
   productName String
   price       String
   quantity    Int      @default(1)
+
+  @@index([orderId])
+  @@index([productId])
 }
 
 // ─── 5. NEWSLETTER SUBSCRIBERS ──────────────────────────────────
@@ -85,4 +98,6 @@ model NewsletterSubscriber {
   id           String   @id @default(cuid())
   email        String   @unique
   subscribedAt DateTime @default(now())
+
+  @@index([subscribedAt])
 }

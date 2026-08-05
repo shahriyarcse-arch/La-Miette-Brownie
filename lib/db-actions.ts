@@ -3,7 +3,11 @@
 import { prisma } from "@/lib/prisma";
 import { ALL_PRODUCTS } from "@/lib/constants";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { sendEmailReceipt } from "@/lib/email";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { getCache, setCache, invalidateCache } from "@/lib/redis";
+import { sendSmsNotification, SMS_TEMPLATES } from "@/lib/sms";
 
 export interface CreateOrderPayload {
   orderId: string;
@@ -22,6 +26,50 @@ export interface CreateOrderPayload {
     price: string;
     quantity: number;
   }[];
+}
+
+/**
+ * Sanitize raw strings against XSS & script injection
+ */
+function sanitizeInput(str: string): string {
+  if (!str) return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;")
+    .trim();
+}
+
+/**
+ * Server-side Admin Passcode Verification
+ * Prevents secret passcode leakage in client JS bundles.
+ * Fails closed: without ADMIN_PASSCODE configured, access is denied.
+ */
+export async function verifyAdminPasscode(passcode: string): Promise<{ success: boolean }> {
+  const secretPasscode = process.env.ADMIN_PASSCODE;
+  if (!secretPasscode) {
+    console.error("ADMIN_PASSCODE is not configured. Admin access denied.");
+    return { success: false };
+  }
+
+  // Brute-force guard: max 5 attempts per minute per client
+  const forwardedFor = (await headers()).get("x-forwarded-for") || "";
+  const clientIp = (
+    forwardedFor.split(",")[0]?.trim() ||
+    (await headers()).get("x-real-ip") ||
+    "admin_login"
+  );
+  const rateLimit = await checkRateLimit(`admin_login:${clientIp}`, 5, 60);
+  if (!rateLimit.allowed) {
+    return { success: false };
+  }
+
+  if (passcode === secretPasscode) {
+    return { success: true };
+  }
+  return { success: false };
 }
 
 /**
@@ -59,8 +107,6 @@ export async function seedProductsIfEmpty() {
     console.error("Failed to seed products:", error);
   }
 }
-
-import { getCache, setCache, invalidateCache } from "@/lib/redis";
 
 /**
  * Get all products from PostgreSQL database (cached with Redis for 0-ms latency)
@@ -112,11 +158,11 @@ export async function createDatabaseOrder(payload: CreateOrderPayload) {
           transactionId: payload.transactionId,
           customer: {
             create: {
-              name: payload.customerName,
-              phone: payload.customerPhone,
-              email: payload.customerEmail || null,
-              pickupTime: payload.pickupTime,
-              notes: payload.notes || null,
+              name: sanitizeInput(payload.customerName),
+              phone: sanitizeInput(payload.customerPhone),
+              email: payload.customerEmail ? sanitizeInput(payload.customerEmail) : null,
+              pickupTime: sanitizeInput(payload.pickupTime),
+              notes: payload.notes ? sanitizeInput(payload.notes) : null,
             },
           },
         },
@@ -199,8 +245,6 @@ export async function getDatabaseOrders() {
   }
 }
 
-import { sendSmsNotification, SMS_TEMPLATES } from "@/lib/sms";
-
 /**
  * Update Order status in PostgreSQL and trigger SMS notification
  */
@@ -277,5 +321,33 @@ export async function subscribeNewsletter(email: string) {
   } catch (error) {
     console.error("Newsletter subscription error:", error);
     return { success: false, error: "Failed to subscribe email." };
+  }
+}
+
+/**
+ * Delete an order and its related records from PostgreSQL
+ */
+export async function deleteDatabaseOrder(orderId: string) {
+  try {
+    const order = await prisma.order.findUnique({
+      where: { orderId },
+      include: { items: true },
+    });
+
+    if (!order) {
+      return { success: false, error: "Order not found in database." };
+    }
+
+    await prisma.$transaction([
+      prisma.orderItem.deleteMany({ where: { orderId: order.id } }),
+      prisma.customer.deleteMany({ where: { orderId: order.id } }),
+      prisma.order.delete({ where: { id: order.id } }),
+    ]);
+
+    revalidatePath("/admin");
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to delete order:", error);
+    return { success: false, error: "Failed to delete order from database." };
   }
 }
