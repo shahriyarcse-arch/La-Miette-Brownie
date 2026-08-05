@@ -45,7 +45,7 @@ interface CartContextType {
   totalCartCount: number;
   calculateSubtotal: () => string;
   orders: BakeryOrder[];
-  placeOrder: (customer: CustomerDetails) => BakeryOrder;
+  placeOrder: (customer: CustomerDetails, orderId?: string) => BakeryOrder;
   // Admin capabilities
   updateOrderStatus: (orderId: string, newStatus: OrderStatus) => void;
   deleteOrder: (orderId: string) => void;
@@ -162,10 +162,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     return total.toFixed(2);
   };
 
-  const placeOrder = (customer: CustomerDetails): BakeryOrder => {
-    const randomId = Math.floor(10000 + Math.random() * 90000);
+  const placeOrder = (customer: CustomerDetails, orderId?: string): BakeryOrder => {
+    const finalOrderId = orderId || `MK-${Math.floor(10000 + Math.random() * 90000)}`;
     const newOrder: BakeryOrder = {
-      orderId: `MK-${randomId}`,
+      orderId: finalOrderId,
       createdAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       createdAtISO: new Date().toISOString(),
       items: [...cartItems],
@@ -174,7 +174,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       status: "Reserved",
       paymentMethod: customer.paymentMethod || "cash_on_pickup",
       paymentStatus: customer.paymentStatus || (customer.paymentMethod === "cash_on_pickup" ? "Pending (Cash at Pickup)" : "Paid"),
-      transactionId: customer.transactionId || `TXN-LOCAL-${randomId}`,
+      transactionId: customer.transactionId || `TXN-LOCAL-${finalOrderId.replace("MK-", "")}`,
     };
 
     setOrders((prev) => [newOrder, ...prev]);

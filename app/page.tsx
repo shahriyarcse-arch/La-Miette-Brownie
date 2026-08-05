@@ -97,7 +97,7 @@ export default function Home() {
         paymentStatus: "Paid",
         transactionId: trx,
       };
-      const newOrder = placeOrder(updatedCustomer);
+      const newOrder = placeOrder(updatedCustomer, orderId);
       setActiveOrder(newOrder);
       setIsCheckoutStep(false);
       setIsInitiatingPayment(false);
@@ -189,7 +189,7 @@ export default function Home() {
           paymentStatus: paymentMethod === "cash_on_pickup" ? "Pending (Cash at Pickup)" : "Paid",
           transactionId: data.transactionId,
         };
-        const newOrder = placeOrder(updatedCustomer);
+        const newOrder = placeOrder(updatedCustomer, orderId);
         setActiveOrder(newOrder);
         setIsCheckoutStep(false);
         setIsInitiatingPayment(false);
