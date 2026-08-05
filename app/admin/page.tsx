@@ -22,7 +22,6 @@ import {
   Flame,
   CheckCircle2,
   Timer,
-  AlertCircle,
   ToggleLeft,
   ToggleRight,
   Bell,
@@ -31,7 +30,7 @@ import {
 } from "lucide-react";
 import { useCart, BakeryOrder, OrderStatus } from "@/context/CartContext";
 import { ALL_PRODUCTS, parsePrice } from "@/lib/constants";
-import { updateDatabaseOrderStatus, toggleDatabaseProductStock, getDatabaseOrders } from "@/lib/db-actions";
+import { updateDatabaseOrderStatus, toggleDatabaseProductStock } from "@/lib/db-actions";
 
 // ─── Admin Passcode ──────────────────────────────────────────────
 const ADMIN_PASSCODE = process.env.NEXT_PUBLIC_ADMIN_PASSCODE || "1984";
@@ -122,7 +121,7 @@ function exportOrdersCsv(orders: BakeryOrder[]) {
   const header = "Order ID,Customer,Phone,Email,Pickup,Status,Subtotal,Items,Date\n";
   const rows = orders.map((o) => {
     const items = o.items.map((i) => `${i.quantity}x ${i.product.name}`).join(" | ");
-    return `${o.orderId},"${o.customer.name}","${o.customer.phone}","${o.customer.email}","${o.customer.pickupTime}",${o.status},$${o.subtotal},"${items}",${o.createdAtISO || o.createdAt}`;
+    return `${o.orderId},"${o.customer.name}","${o.customer.phone}","${o.customer.email}","${o.customer.pickupTime}",${o.status},৳${o.subtotal},"${items}",${o.createdAtISO || o.createdAt}`;
   });
   const csv = header + rows.join("\n");
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -678,7 +677,7 @@ export default function AdminDashboard() {
                             </p>
                             <p className="text-[10px] font-mono text-[#F7F1E5]/30 mt-0.5">
                               {order.items.length} item
-                              {order.items.length !== 1 ? "s" : ""} · $
+                              {order.items.length !== 1 ? "s" : ""} · ৳
                               {order.subtotal} · {order.createdAt}
                             </p>
                           </div>
