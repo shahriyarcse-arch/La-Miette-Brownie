@@ -94,6 +94,9 @@ export async function getDatabaseProducts() {
  */
 export async function createDatabaseOrder(payload: CreateOrderPayload) {
   try {
+    // Ensure the catalog is seeded so order items can link to real products
+    await seedProductsIfEmpty();
+
     const numericTotal = parseFloat(payload.subtotal.replace(/[^0-9.]/g, "")) || 0;
 
     const newOrder = await prisma.$transaction(async (tx) => {
