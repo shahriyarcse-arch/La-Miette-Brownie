@@ -15,7 +15,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
   onCompleteRef.current = onComplete;
 
   const progress = useMotionValue(0);
-  const progressWidth = useTransform(progress, (v) => `${v}%`);
+  const progressScale = useTransform(progress, (v) => v / 100);
   const progressText = useTransform(progress, (v) => Math.floor(v));
 
   useEffect(() => {
@@ -112,11 +112,11 @@ export function Preloader({ onComplete }: PreloaderProps) {
           {/* Warm Silk Gradient Background */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#FAF6EE] via-[#F7F1E5] to-[#EFE7D8] pointer-events-none" />
 
-          {/* Top Progress Bar */}
-          <div className="absolute top-0 left-0 w-full h-[3px] bg-[#221B12]/10 z-30">
+          {/* Top Progress Bar (GPU ScaleX for 120fps Zero-Lag Smoothness) */}
+          <div className="absolute top-0 left-0 w-full h-[3px] bg-[#221B12]/10 z-30 overflow-hidden">
             <motion.div
-              className="h-full bg-gradient-to-r from-[#B06A2C] via-[#D9A441] to-[#221B12]"
-              style={{ width: progressWidth, willChange: "width" }}
+              className="h-full w-full bg-gradient-to-r from-[#B06A2C] via-[#D9A441] to-[#221B12] origin-left"
+              style={{ scaleX: progressScale, willChange: "transform" }}
             />
           </div>
 
