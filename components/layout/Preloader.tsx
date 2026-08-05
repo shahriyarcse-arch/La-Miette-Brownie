@@ -31,67 +31,64 @@ export function Preloader({ onComplete }: PreloaderProps) {
       } else {
         window.addEventListener("load", markPageReady);
         document.addEventListener("DOMContentLoaded", markPageReady);
-        document.addEventListener("readystatechange", markPageReady);
       }
     }
 
-    // ── Cinematic smooth counter ──
-    const startTime = Date.now();
-    const MIN_DURATION = 2200;
+    // ── Ultra-Smooth 60fps/120fps rAF Counter Loop ──
+    const startTime = performance.now();
+    const DURATION = 2000; // 2 seconds crisp animation
+    let animationFrameId: number;
 
-    const interval = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const t = Math.min(elapsed / MIN_DURATION, 1);
+    const animateProgress = (now: number) => {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / DURATION, 1);
 
-      // easeInOutCubic curve
-      const eased = t < 0.5
-        ? 4 * t * t * t
-        : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      // easeOutCubic curve for responsive counter
+      const eased = 1 - Math.pow(1 - t, 3);
       const target = Math.floor(eased * 100);
 
-      // If page isn't loaded yet, cap at 90%
-      if (!pageReadyRef.current && target > 90) {
-        setProgress(90);
+      // Cap at 95% if document isn't fully ready
+      if (!pageReadyRef.current && target > 95) {
+        setProgress(95);
+        animationFrameId = requestAnimationFrame(animateProgress);
         return;
       }
 
-      // If page is ready and animation duration is complete → finish
-      if (pageReadyRef.current && t >= 1) {
-        clearInterval(interval);
+      if (t >= 1 && pageReadyRef.current) {
         if (!completedRef.current) {
           completedRef.current = true;
           setProgress(100);
-          // Use rAF to ensure the 100% renders before exit starts
-          requestAnimationFrame(() => {
+          // Wait 150ms at 100% before smooth slide up
+          setTimeout(() => {
             setIsLoading(false);
             onCompleteRef.current?.();
-          });
+          }, 150);
         }
         return;
       }
 
-      setProgress((prev) => Math.max(prev, target));
-    }, 30);
+      setProgress(target);
+      animationFrameId = requestAnimationFrame(animateProgress);
+    };
 
-    // Safety net: never hang longer than 8s
+    animationFrameId = requestAnimationFrame(animateProgress);
+
+    // Safety net: never hang longer than 6s
     const safetyTimeout = setTimeout(() => {
-      clearInterval(interval);
+      cancelAnimationFrame(animationFrameId);
       if (!completedRef.current) {
         completedRef.current = true;
         setProgress(100);
-        requestAnimationFrame(() => {
-          setIsLoading(false);
-          onCompleteRef.current?.();
-        });
+        setIsLoading(false);
+        onCompleteRef.current?.();
       }
-    }, 8000);
+    }, 6000);
 
     return () => {
+      cancelAnimationFrame(animationFrameId);
+      clearTimeout(safetyTimeout);
       window.removeEventListener("load", markPageReady);
       document.removeEventListener("DOMContentLoaded", markPageReady);
-      document.removeEventListener("readystatechange", markPageReady);
-      clearInterval(interval);
-      clearTimeout(safetyTimeout);
     };
   }, []);
 
@@ -100,11 +97,13 @@ export function Preloader({ onComplete }: PreloaderProps) {
       {isLoading && (
         <motion.div
           key="preloader"
-          initial={{ opacity: 1 }}
+          initial={{ opacity: 1, y: 0 }}
           exit={{
-            clipPath: "inset(0% 0% 100% 0%)",
-            transition: { duration: 0.85, ease: [0.76, 0, 0.24, 1] },
+            y: "-100%",
+            opacity: 0.95,
+            transition: { duration: 0.75, ease: [0.76, 0, 0.24, 1] },
           }}
+          style={{ willChange: "transform, opacity" }}
           className="fixed inset-0 z-[10000] bg-[#F7F1E5] text-[#221B12] flex flex-col justify-between p-6 sm:p-8 md:p-12 lg:p-16 select-none overflow-hidden"
         >
           {/* Warm Silk Gradient Background */}
@@ -112,10 +111,9 @@ export function Preloader({ onComplete }: PreloaderProps) {
 
           {/* Top Progress Bar */}
           <div className="absolute top-0 left-0 w-full h-[3px] bg-[#221B12]/10 z-30">
-            <motion.div
-              className="h-full bg-gradient-to-r from-[#B06A2C] via-[#D9A441] to-[#221B12]"
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
+            <div
+              className="h-full bg-gradient-to-r from-[#B06A2C] via-[#D9A441] to-[#221B12] transition-all duration-150 ease-out"
+              style={{ width: `${progress}%` }}
             />
           </div>
 
@@ -125,7 +123,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
             <motion.span
               initial={{ opacity: 0, y: -12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={{ duration: 0.5, delay: 0.05 }}
               className="text-xs sm:text-xs md:text-sm font-mono tracking-[0.14em] sm:tracking-[0.18em] text-[#B06A2C] uppercase font-bold whitespace-nowrap shrink-0"
             >
               HANDCRAFTED DESSERT LAB • EST. 2026
@@ -135,14 +133,11 @@ export function Preloader({ onComplete }: PreloaderProps) {
             <motion.span
               initial={{ opacity: 0, y: -12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
               className="text-[11px] sm:text-xs md:text-sm font-mono tracking-[0.12em] sm:tracking-[0.14em] text-[#221B12]/75 uppercase font-semibold text-left sm:text-right"
             >
-              {/* Mobile: concise but readable */}
               <span className="sm:hidden">DHAKA • ALL ZONES</span>
-              {/* Tablet: medium */}
               <span className="hidden sm:inline lg:hidden">DHAKA • GULSHAN • UTTARA • DHANMONDI</span>
-              {/* Desktop: full */}
               <span className="hidden lg:inline">DHAKA • GULSHAN • BANANI • UTTARA • DHANMONDI • MIRPUR • BASHUNDHARA</span>
             </motion.span>
           </div>
@@ -150,19 +145,18 @@ export function Preloader({ onComplete }: PreloaderProps) {
           {/* ── Dead-Centered Brand Identity ── */}
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center pointer-events-none">
             <div className="space-y-4 sm:space-y-6 max-w-4xl mx-auto pointer-events-auto">
-              {/* Brand Title with Blur Reveal */}
+              {/* Brand Title */}
               <motion.div
-                initial={{ opacity: 0, y: 35, filter: "blur(14px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -25, filter: "blur(10px)", scale: 1.05 }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 className="text-[3.25rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-serif text-[#221B12] tracking-tight font-bold leading-none"
               >
                 La{" "}
                 <motion.span
-                  initial={{ opacity: 0, scale: 0.6, rotate: -12 }}
-                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                  transition={{ duration: 0.8, delay: 0.35, ease: "backOut" }}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
                   className="inline-block text-[#B06A2C] italic font-serif font-normal"
                 >
                   Miette
@@ -174,15 +168,15 @@ export function Preloader({ onComplete }: PreloaderProps) {
               <motion.div
                 initial={{ scaleX: 0, opacity: 0 }}
                 animate={{ scaleX: 1, opacity: 0.9 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
                 className="w-20 sm:w-24 md:w-36 h-[2px] bg-gradient-to-r from-transparent via-[#B06A2C] to-transparent mx-auto"
               />
 
               {/* Product Subtitle */}
               <motion.p
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.65 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
                 className="text-xs sm:text-xs md:text-sm font-mono uppercase tracking-[0.16em] sm:tracking-[0.28em] text-[#B06A2C] font-bold max-w-[280px] sm:max-w-none mx-auto leading-relaxed sm:leading-normal"
               >
                 BROWNIES · PASTRIES · PUDDINGS · CAKES · COOKIES
@@ -196,11 +190,11 @@ export function Preloader({ onComplete }: PreloaderProps) {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
               className="space-y-1 pb-0.5 shrink min-w-0"
             >
               <div className="text-[#B06A2C] font-bold flex items-center gap-2 text-xs sm:text-xs md:text-sm font-mono tracking-[0.12em] sm:tracking-[0.15em] uppercase whitespace-nowrap">
-                <span className="w-2 h-2 sm:w-2 sm:h-2 rounded-full bg-[#B06A2C] animate-ping shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-[#B06A2C] animate-ping shrink-0" />
                 PREPARING FRESH BATCHES...
               </div>
               <p className="text-[11px] sm:text-xs text-[#221B12]/75 font-mono font-semibold tracking-[0.14em] uppercase hidden sm:block">
@@ -212,8 +206,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
               className="font-serif font-bold text-right leading-none select-none tracking-tight shrink-0"
             >
               <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-[#B06A2C] font-bold">
