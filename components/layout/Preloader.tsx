@@ -61,7 +61,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       if (t >= 1 && pageReadyRef.current) {
         if (!completedRef.current) {
           completedRef.current = true;
-          progress.set(100);
+          smoothProgress.jump(100);
           // Wait 150ms at 100% before smooth slide up
           setTimeout(() => {
             setIsLoading(false);
@@ -82,7 +82,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       cancelAnimationFrame(animationFrameId);
       if (!completedRef.current) {
         completedRef.current = true;
-        progress.set(100);
+        smoothProgress.jump(100);
         setIsLoading(false);
         onCompleteRef.current?.();
       }
@@ -94,7 +94,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       window.removeEventListener("load", markPageReady);
       document.removeEventListener("DOMContentLoaded", markPageReady);
     };
-  }, [progress]);
+  }, [progress, smoothProgress]);
 
   return (
     <AnimatePresence mode="wait">
