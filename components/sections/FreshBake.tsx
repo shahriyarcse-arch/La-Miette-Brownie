@@ -25,7 +25,7 @@ export function FreshBake() {
       const currentMinute = now.getMinutes();
 
       let nextBatchIdx = 0;
-      let targetTime = new Date(now);
+      const targetTime = new Date(now);
 
       const found = SCHEDULE.findIndex(
         (b) => currentHour < b.hour || (currentHour === b.hour && currentMinute < b.minute)

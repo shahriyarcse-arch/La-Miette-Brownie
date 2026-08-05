@@ -2,16 +2,12 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Instagram, Facebook, Twitter, MapPin, Clock, Phone, ArrowUp, X, ShieldCheck, FileText, AlertCircle } from "lucide-react";
+import { Instagram, Facebook, Twitter, MapPin, Clock, Phone, X, ShieldCheck, FileText, AlertCircle } from "lucide-react";
 
 type ModalType = "privacy" | "terms" | "allergen" | null;
 
 export function Footer() {
   const [activeModal, setActiveModal] = useState<ModalType>(null);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   const handleNavClick = (id: string, e: React.MouseEvent) => {
     e.preventDefault();

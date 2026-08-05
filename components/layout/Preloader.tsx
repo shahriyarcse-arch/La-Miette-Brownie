@@ -8,7 +8,6 @@ interface PreloaderProps {
 }
 
 export function Preloader({ onComplete }: PreloaderProps) {
-  const [mounted, setMounted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const completedRef = useRef(false);
@@ -17,7 +16,6 @@ export function Preloader({ onComplete }: PreloaderProps) {
   onCompleteRef.current = onComplete;
 
   useEffect(() => {
-    setMounted(true);
     if (typeof document !== "undefined") {
       document.documentElement.classList.remove("ssr-loading");
     }

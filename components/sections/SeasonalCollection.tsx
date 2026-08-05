@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { SEASONAL_COLLECTION } from "@/lib/constants";
 import { Calendar } from "lucide-react";
 import Image from "next/image";
-import { MagneticButton } from "@/components/ui/MagneticButton";
 
 export function SeasonalCollection() {
   return (

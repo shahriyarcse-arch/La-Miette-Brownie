@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { ShieldCheck, CheckCircle2, AlertCircle, Lock, ArrowLeft, CreditCard } from "lucide-react";
+import { CheckCircle2, Lock, CreditCard } from "lucide-react";
 
 function PaymentContent() {
   const searchParams = useSearchParams();

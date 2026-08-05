@@ -5,7 +5,7 @@ import { createDatabaseOrder } from "@/lib/db-actions";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ShoppingBag, Plus, Minus, ArrowRight, Check, User, Phone, Mail, Clock, FileText, CreditCard, Smartphone, ShieldCheck, DollarSign } from "lucide-react";
+import { X, ShoppingBag, Plus, Minus, ArrowRight, Check, User, Phone, Mail, Clock, CreditCard, DollarSign } from "lucide-react";
 import { Product } from "@/lib/constants";
 import { Preloader } from "@/components/layout/Preloader";
 import { Navbar } from "@/components/layout/Navbar";
@@ -232,13 +232,7 @@ export default function Home() {
       <Navbar cartCount={totalCartCount} onOpenCart={() => setIsCartOpen(true)} />
 
       {/* 1. Hero Section */}
-      <Hero
-        isPreloaderDone={isPreloaderDone}
-        onExploreProducts={() => {
-          const el = document.getElementById("products");
-          if (el) el.scrollIntoView({ behavior: "smooth" });
-        }}
-      />
+      <Hero isPreloaderDone={isPreloaderDone} />
 
       {/* 2. Signature Collection */}
       <SignatureCollection

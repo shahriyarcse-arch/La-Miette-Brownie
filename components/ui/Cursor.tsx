@@ -36,8 +36,8 @@ export default function Cursor() {
     const ringXTo = gsap.quickTo(ring, "x", { duration: 0.35, ease: "power3.out" });
     const ringYTo = gsap.quickTo(ring, "y", { duration: 0.35, ease: "power3.out" });
 
-    let labelXTo: Function | null = null;
-    let labelYTo: Function | null = null;
+    let labelXTo: ReturnType<typeof gsap.quickTo> | null = null;
+    let labelYTo: ReturnType<typeof gsap.quickTo> | null = null;
     if (label) {
       labelXTo = gsap.quickTo(label, "x", { duration: 0.25, ease: "power2.out" });
       labelYTo = gsap.quickTo(label, "y", { duration: 0.25, ease: "power2.out" });
