@@ -5,6 +5,7 @@ import SmoothScroll from "@/components/layout/SmoothScroll";
 import Cursor from "@/components/ui/Cursor";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { CartProvider } from "@/context/CartContext";
+import { MotionProvider } from "@/components/ui/MotionProvider";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -35,12 +36,24 @@ export const metadata: Metadata = {
     siteName: "Mika & Co.",
     type: "website",
     locale: "en_US",
+    url: "https://mikaandco.com/",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1200&auto=format&fit=crop",
+        width: 1200,
+        height: 800,
+        alt: "Mika & Co. freshly baked Belgian chocolate brownies",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Mika & Co. • Luxury Dessert Boutique",
     description:
       "Handcrafted Belgian dark chocolate brownies and artisanal desserts in Dhaka.",
+    images: [
+      "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1200&auto=format&fit=crop",
+    ],
   },
   robots: {
     index: true,
@@ -96,11 +109,13 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning className="bg-[#F7F1E5] text-[#221B12] antialiased font-sans">
         <CartProvider>
-          <SmoothScroll>
-            <Cursor />
-            <ScrollProgress />
-            {children}
-          </SmoothScroll>
+          <MotionProvider>
+            <SmoothScroll>
+              <Cursor />
+              <ScrollProgress />
+              {children}
+            </SmoothScroll>
+          </MotionProvider>
         </CartProvider>
       </body>
     </html>
