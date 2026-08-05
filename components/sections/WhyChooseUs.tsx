@@ -41,7 +41,7 @@ export function WhyChooseUs() {
             OUR PROMISE TO YOU
           </span>
           <h2 className="text-3xl md:text-5xl font-serif font-bold text-[#221B12]">
-            Why Dessert Lovers Choose La Miette
+            Why Dessert Lovers Choose La Miette Bakes
           </h2>
         </motion.div>
 

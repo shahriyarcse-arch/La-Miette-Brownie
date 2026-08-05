@@ -1,5 +1,5 @@
 /**
- * La Miette — SMS Gateway Notification Engine
+ * La Miette Bakes — SMS Gateway Notification Engine
  * Supports: Greenweb BD, SSL Wireless, Twilio, and Sandbox Logger
  */
 
@@ -120,11 +120,11 @@ export async function sendSmsNotification(
  */
 export const SMS_TEMPLATES = {
   orderConfirmed: (name: string, orderId: string, pickupTime: string) =>
-    `La Miette: Hello ${name}! Your bakery order #${orderId} is confirmed for ${pickupTime} pickup. Total batch locked!`,
+    `La Miette Bakes: Hello ${name}! Your bakery order #${orderId} is confirmed for ${pickupTime} pickup. Total batch locked!`,
 
   orderInOven: (orderId: string) =>
-    `La Miette: Great news! Your order #${orderId} is currently baking in our hearth oven. Smells heavenly!`,
+    `La Miette Bakes: Great news! Your order #${orderId} is currently baking in our hearth oven. Smells heavenly!`,
 
   orderReady: (orderId: string, address: string) =>
-    `La Miette: Fresh out! Your order #${orderId} is ready for pickup at ${address}. Please show this receipt.`,
+    `La Miette Bakes: Fresh out! Your order #${orderId} is ready for pickup at ${address}. Please show this receipt.`,
 };

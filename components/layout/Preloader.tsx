@@ -165,9 +165,9 @@ export function Preloader({ onComplete }: PreloaderProps) {
                   transition={{ duration: 0.8, delay: 0.35, ease: "backOut" }}
                   className="inline-block text-[#B06A2C] italic font-serif font-normal"
                 >
-                  &amp;
+                  Miette
                 </motion.span>{" "}
-                Miette
+                Bakes
               </motion.div>
 
               {/* Gold Line Divider */}

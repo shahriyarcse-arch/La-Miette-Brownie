@@ -56,14 +56,14 @@ export function Navbar({ cartCount = 0, onOpenCart }: NavbarProps) {
           {/* Logo */}
           <a
             href="#"
-            data-cursor="La Miette"
+            data-cursor="La Miette Bakes"
             className="flex items-center gap-2.5 group shrink-0 whitespace-nowrap"
           >
             <span className="w-2.5 h-2.5 rounded-full bg-[#E8AB48] transition-transform duration-300 group-hover:scale-150 shadow-[0_0_10px_rgba(232,171,72,0.8)]" />
             <span className={`text-xl md:text-2xl font-serif font-bold tracking-tight whitespace-nowrap transition-colors duration-300 ${
               isScrolled ? "text-[#1C130B]" : "text-[#FAF6EE] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
             }`}>
-              La Miette
+              La Miette Bakes
             </span>
           </a>
 

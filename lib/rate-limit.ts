@@ -1,5 +1,5 @@
 /**
- * La Miette — Rate Limiter & Anti-Spam Guard Engine
+ * La Miette Bakes — Rate Limiter & Anti-Spam Guard Engine
  * Prevents checkout spam and brute-force passcode attempts
  */
 

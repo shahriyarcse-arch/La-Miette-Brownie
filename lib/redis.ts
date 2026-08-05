@@ -1,5 +1,5 @@
 /**
- * La Miette — Redis Ultra-Fast Caching & Rate Limiting Engine
+ * La Miette Bakes — Redis Ultra-Fast Caching & Rate Limiting Engine
  * Uses Upstash Redis with In-Memory fallback for 0-ms caching
  */
 
@@ -11,9 +11,9 @@ const inMemoryCache = new Map<string, { data: unknown; expiresAt: number }>();
 export const redis =
   process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
     ? new Redis({
-        url: process.env.UPSTASH_REDIS_REST_URL,
-        token: process.env.UPSTASH_REDIS_REST_TOKEN,
-      })
+      url: process.env.UPSTASH_REDIS_REST_URL,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    })
     : null;
 
 /**

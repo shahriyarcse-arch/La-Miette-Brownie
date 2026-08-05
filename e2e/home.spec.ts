@@ -1,13 +1,13 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("La Miette - Core E2E User Journey", () => {
+test.describe("La Miette Bakes - Core E2E User Journey", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
     await page.locator(".fixed.z-\\[10000\\]").waitFor({ state: "detached", timeout: 10000 }).catch(() => {});
   });
 
   test("should render main Hero headline and brand logo", async ({ page }) => {
-    await expect(page.locator("header")).toContainText("La Miette");
+    await expect(page.locator("header")).toContainText("La Miette Bakes");
     await expect(page.locator("h1")).toBeVisible();
     await expect(page.locator("h1")).toContainText("Freshly Baked Desserts");
   });

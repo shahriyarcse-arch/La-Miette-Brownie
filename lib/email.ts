@@ -1,5 +1,5 @@
 /**
- * La Miette — Automated Transactional Email Engine
+ * La Miette Bakes — Automated Transactional Email Engine
  * Sends HTML Receipts & Invoices via Resend / SendGrid / Sandbox
  */
 
@@ -21,7 +21,7 @@ export async function sendEmailReceipt(req: SendEmailReceiptRequest) {
 
   const htmlBody = `
     <div style="font-family: serif; background-color: #18120C; color: #FAF6EE; padding: 32px; border-radius: 24px; max-width: 600px; margin: 0 auto;">
-      <h1 style="color: #E8AB48; margin-bottom: 8px;">La Miette — Luxury Dessert Boutique</h1>
+      <h1 style="color: #E8AB48; margin-bottom: 8px;">La Miette Bakes — Luxury Dessert Boutique</h1>
       <p style="color: #FAF6EE; opacity: 0.8; font-size: 14px;">Reservation Receipt #${orderId}</p>
       <hr style="border-color: rgba(232,171,72,0.3); margin: 20px 0;" />
       
@@ -54,9 +54,9 @@ export async function sendEmailReceipt(req: SendEmailReceiptRequest) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          from: "La Miette <orders@lamiette.com>",
+          from: "La Miette Bakes <orders@lamiette.com>",
           to: [to],
-          subject: `Reservation Receipt #${orderId} — La Miette`,
+          subject: `Reservation Receipt #${orderId} — La Miette Bakes`,
           html: htmlBody,
         }),
       });
