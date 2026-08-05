@@ -32,7 +32,7 @@ export function Footer() {
             <div className="flex items-center gap-2.5">
               <span className="w-3 h-3 rounded-full bg-[#E8AB48] shadow-[0_0_12px_rgba(232,171,72,0.8)]" />
               <span className="text-2xl md:text-3xl font-serif font-bold text-[#FAF6EE] tracking-tight">
-                Mika &amp; Co.
+                La Miette
               </span>
             </div>
             <p className="text-[#FAF6EE]/70 text-sm leading-relaxed max-w-sm font-sans">
@@ -172,7 +172,7 @@ export function Footer() {
 
         {/* Bottom Bar with Scroll-to-Top & Legal Modals */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-[#FAF6EE]/50">
-          <p suppressHydrationWarning>© {new Date().getFullYear()} Mika &amp; Co. — Luxury Dessert Boutique. All Rights Reserved.</p>
+          <p suppressHydrationWarning>© {new Date().getFullYear()} La Miette — Luxury Dessert Boutique. All Rights Reserved.</p>
 
           <div className="flex items-center gap-6">
             <button
@@ -227,7 +227,7 @@ export function Footer() {
                     <h3 className="text-xl font-serif font-bold text-[#FAF6EE]">Privacy Policy</h3>
                   </div>
                   <p className="text-sm text-[#FAF6EE]/80 font-sans leading-relaxed">
-                    At Mika &amp; Co., your privacy is paramount. All order information and delivery details are stored securely. We never share your personal data with third parties.
+                    At La Miette, your privacy is paramount. All order information and delivery details are stored securely. We never share your personal data with third parties.
                   </p>
                 </>
               )}

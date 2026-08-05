@@ -22,33 +22,33 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://mikaandco.com"),
-  title: "Mika & Co. • Luxury Dessert Boutique & Cake Studio | Dhaka",
+  metadataBase: new URL("https://lamiette.com"),
+  title: "La Miette • Luxury Dessert Boutique & Cake Studio | Dhaka",
   description:
     "Handcrafted Belgian chocolate brownies, molten cheesecakes, and chunky cookies baked fresh daily in Dhaka.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Mika & Co. • Luxury Dessert Boutique",
+    title: "La Miette • Luxury Dessert Boutique",
     description:
       "Handcrafted Belgian dark chocolate brownies, burnt caramel cheesecakes, and artisanal cookies baked fresh daily.",
-    siteName: "Mika & Co.",
+    siteName: "La Miette",
     type: "website",
     locale: "en_US",
-    url: "https://mikaandco.com/",
+    url: "https://lamiette.com/",
     images: [
       {
         url: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1200&auto=format&fit=crop",
         width: 1200,
         height: 800,
-        alt: "Mika & Co. freshly baked Belgian chocolate brownies",
+        alt: "La Miette freshly baked Belgian chocolate brownies",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mika & Co. • Luxury Dessert Boutique",
+    title: "La Miette • Luxury Dessert Boutique",
     description:
       "Handcrafted Belgian dark chocolate brownies and artisanal desserts in Dhaka.",
     images: [
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Bakery",
-  name: "Mika & Co.",
+  name: "La Miette",
   image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1200",
   description: "Artisanal luxury dessert boutique specializing in Belgian dark chocolate brownies, Basque burnt cheesecakes, and NYC-style cookies.",
   address: {

@@ -94,7 +94,7 @@ export function ChefRecommendation() {
               PASTRY CHEF&apos;S RITUAL
             </span>
             <h2 className="text-3xl md:text-5xl font-serif font-bold text-[#221B12]">
-              Mika&apos;s Perfect Morning
+              La Miette&apos;s Perfect Morning
             </h2>
             <p className="text-[#4A3F2E] text-base md:text-lg font-normal leading-relaxed">
               &ldquo; Break open a freshly baked, intensely fudgy brownie while the chocolate core is still molten. A drizzle of sea salt, a scoop of vanilla bean gelato, and a fresh cup of hot espresso. There is no simpler joy in the world. &rdquo;

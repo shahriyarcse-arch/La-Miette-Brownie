@@ -1,5 +1,5 @@
 /**
- * Mika & Co. — Redis Ultra-Fast Caching & Rate Limiting Engine
+ * La Miette — Redis Ultra-Fast Caching & Rate Limiting Engine
  * Uses Upstash Redis with In-Memory fallback for 0-ms caching
  */
 

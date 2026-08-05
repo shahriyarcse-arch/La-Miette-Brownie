@@ -148,7 +148,7 @@ function exportOrdersCsv(orders: BakeryOrder[]) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `mika-orders-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.download = `lamiette-orders-${new Date().toISOString().slice(0, 10)}.csv`;
   a.click();
   URL.revokeObjectURL(url);
 }
@@ -225,7 +225,7 @@ export default function AdminDashboard() {
     setMounted(true);
     // Restore admin session
     try {
-      const saved = sessionStorage.getItem("mika_admin_auth");
+      const saved = sessionStorage.getItem("lamiette_admin_auth");
       if (saved === "true") setAuthenticated(true);
     } catch {
       // silent
@@ -240,7 +240,7 @@ export default function AdminDashboard() {
         setAuthenticated(true);
         setPasscodeError(false);
         try {
-          sessionStorage.setItem("mika_admin_auth", "true");
+          sessionStorage.setItem("lamiette_admin_auth", "true");
         } catch {
           // silent
         }
@@ -255,7 +255,7 @@ export default function AdminDashboard() {
   const handleLogout = useCallback(() => {
     setAuthenticated(false);
     try {
-      sessionStorage.removeItem("mika_admin_auth");
+      sessionStorage.removeItem("lamiette_admin_auth");
     } catch {
       // silent
     }
@@ -366,7 +366,7 @@ export default function AdminDashboard() {
                 <Lock className="w-7 h-7 text-[#0F0D0A]" />
               </div>
               <h1 className="text-2xl font-serif font-bold text-[#F7F1E5]">
-                Mika & Co.
+                La Miette
               </h1>
               <p className="text-[#F7F1E5]/40 text-xs font-mono mt-1 tracking-widest uppercase">
                 Admin Dashboard
@@ -443,7 +443,7 @@ export default function AdminDashboard() {
             </div>
             <div>
               <h1 className="text-sm font-serif font-bold text-[#F7F1E5] leading-tight">
-                Mika & Co.
+                La Miette
               </h1>
               <p className="text-[9px] font-mono text-[#F7F1E5]/35 uppercase tracking-widest">
                 Bakery Control

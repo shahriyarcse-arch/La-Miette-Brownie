@@ -1,12 +1,12 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Mika & Co. - SEO, Image Loading & Console Hygiene", () => {
+test.describe("La Miette - SEO, Image Loading & Console Hygiene", () => {
   test("should have correct page title and Meta OpenGraph tags", async ({ page }) => {
     await page.goto("/");
-    await expect(page).toHaveTitle(/Mika & Co. • Luxury Dessert Boutique/);
+    await expect(page).toHaveTitle(/La Miette • Luxury Dessert Boutique/);
 
     const ogTitle = await page.locator("meta[property='og:title']").getAttribute("content");
-    expect(ogTitle).toContain("Mika & Co.");
+    expect(ogTitle).toContain("La Miette");
 
     const metaDescription = await page.locator("meta[name='description']").getAttribute("content");
     expect(metaDescription).toContain("Dhaka");

@@ -1,13 +1,13 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Mika & Co. - Core E2E User Journey", () => {
+test.describe("La Miette - Core E2E User Journey", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
     await page.locator(".fixed.z-\\[10000\\]").waitFor({ state: "detached", timeout: 10000 }).catch(() => {});
   });
 
   test("should render main Hero headline and brand logo", async ({ page }) => {
-    await expect(page.locator("header")).toContainText("Mika & Co.");
+    await expect(page.locator("header")).toContainText("La Miette");
     await expect(page.locator("h1")).toBeVisible();
     await expect(page.locator("h1")).toContainText("Freshly Baked Desserts");
   });
@@ -39,7 +39,7 @@ test.describe("Mika & Co. - Core E2E User Journey", () => {
   test("should handle Newsletter subscription form submission cleanly", async ({ page }) => {
     const newsletterInput = page.locator("input[type='email']");
     await newsletterInput.scrollIntoViewIfNeeded();
-    await newsletterInput.fill("customer@mikaandco.com");
+    await newsletterInput.fill("customer@lamiette.com");
     await page.locator("button[type='submit']").click();
 
     // The form must surface deterministic feedback: success when the

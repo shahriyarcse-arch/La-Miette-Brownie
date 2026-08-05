@@ -158,7 +158,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                 className="text-[3.25rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-serif text-[#221B12] tracking-tight font-bold leading-none"
               >
-                Mika{" "}
+                La{" "}
                 <motion.span
                   initial={{ opacity: 0, scale: 0.6, rotate: -12 }}
                   animate={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -167,7 +167,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
                 >
                   &amp;
                 </motion.span>{" "}
-                Co.
+                Miette
               </motion.div>
 
               {/* Gold Line Divider */}

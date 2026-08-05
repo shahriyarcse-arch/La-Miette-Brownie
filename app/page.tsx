@@ -167,7 +167,7 @@ export default function Home() {
         pendingOrderIdRef.current = orderId;
         const popup = window.open(
           data.gatewayUrl,
-          "MikaPaymentGateway",
+          "LaMiettePaymentGateway",
           `width=${width},height=${height},left=${left},top=${top}`
         );
 
@@ -507,7 +507,7 @@ export default function Home() {
                           type="email"
                           value={customer.email}
                           onChange={(e) => setCustomer({ ...customer, email: e.target.value })}
-                          placeholder="eleanor@mika.co"
+                          placeholder="eleanor@lamiette.com"
                           className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F7F1E5]/10 border border-[#F7F1E5]/20 text-[#F7F1E5] placeholder-[#F7F1E5]/40 text-xs focus:outline-none focus:border-[#D9A441]"
                         />
                       </div>

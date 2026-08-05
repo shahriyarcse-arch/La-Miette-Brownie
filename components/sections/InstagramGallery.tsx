@@ -59,7 +59,7 @@ export function InstagramGallery() {
           >
             <div>
               <span className="text-xs font-mono text-[#B06A2C] uppercase tracking-[0.3em] block mb-2 font-semibold">
-                @MIKA.AND.CO
+                @LAMIETTE.BD
               </span>
               <h2 className="text-3xl md:text-5xl font-serif font-bold text-[#221B12]">
                 Instagram Gallery
@@ -105,7 +105,7 @@ export function InstagramGallery() {
                 {/* Individual Card Hover Overlay */}
                 <div className="absolute inset-0 bg-[#221B12]/80 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-between p-6 text-[#FAF6EE]">
                   <div className="flex items-center justify-between text-xs font-mono text-[#D9A441]">
-                    <span>@MIKA.AND.CO</span>
+                    <span>@LAMIETTE.BD</span>
                     <span className="flex items-center gap-1">
                       <Heart className="w-4 h-4 fill-current text-rose-500" />
                       {post.likes}
@@ -143,7 +143,7 @@ export function InstagramGallery() {
                 {/* Individual Card Hover Overlay */}
                 <div className="absolute inset-0 bg-[#221B12]/80 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-between p-6 text-[#FAF6EE]">
                   <div className="flex items-center justify-between text-xs font-mono text-[#D9A441]">
-                    <span>@MIKA.AND.CO</span>
+                    <span>@LAMIETTE.BD</span>
                     <span className="flex items-center gap-1">
                       <Heart className="w-4 h-4 fill-current text-rose-500" />
                       {post.likes}
@@ -204,7 +204,7 @@ export function InstagramGallery() {
 
               <div className="space-y-3">
                 <div className="flex items-center justify-between text-xs text-[#D9A441] font-mono">
-                  <span>@MIKA.AND.CO</span>
+                  <span>@LAMIETTE.BD</span>
                   <span>{selectedPost.likes} Likes</span>
                 </div>
                 <p className="text-[#FAF6EE]/80 text-sm font-serif leading-relaxed">

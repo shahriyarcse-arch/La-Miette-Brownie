@@ -55,9 +55,9 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const CART_STORAGE_KEY = "mika_cart_v1";
-const ORDERS_STORAGE_KEY = "mika_orders_v1";
-const STOCK_STORAGE_KEY = "mika_stock_v1";
+const CART_STORAGE_KEY = "lamiette_cart_v1";
+const ORDERS_STORAGE_KEY = "lamiette_orders_v1";
+const STOCK_STORAGE_KEY = "lamiette_stock_v1";
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -192,7 +192,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   };
 
   const placeOrder = (customer: CustomerDetails, orderId?: string): BakeryOrder => {
-    const finalOrderId = orderId || `MK-${Math.floor(10000 + Math.random() * 90000)}`;
+    const finalOrderId = orderId || `LM-${Math.floor(10000 + Math.random() * 90000)}`;
     const newOrder: BakeryOrder = {
       orderId: finalOrderId,
       createdAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),

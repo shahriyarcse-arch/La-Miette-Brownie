@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Mika & Co. - Responsive Layout & Mobile Navigation", () => {
+test.describe("La Miette - Responsive Layout & Mobile Navigation", () => {
   test("should display mobile menu drawer on small viewports and lock scroll", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto("/");

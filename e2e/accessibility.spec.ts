@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Mika & Co. - Accessibility & Keyboard Navigation", () => {
+test.describe("La Miette - Accessibility & Keyboard Navigation", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
     await page.locator(".fixed.z-\\[10000\\]").waitFor({ state: "detached", timeout: 10000 }).catch(() => { });

@@ -62,7 +62,7 @@ function PaymentContent() {
         <div className="flex items-center justify-between border-b border-[#FAF6EE]/15 pb-4">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-[#E8AB48] shadow-[0_0_10px_#E8AB48]" />
-            <h1 className="text-lg font-serif font-bold text-[#FAF6EE]">Mika &amp; Co. Checkout</h1>
+            <h1 className="text-lg font-serif font-bold text-[#FAF6EE]">La Miette Checkout</h1>
           </div>
           <span className="text-[10px] font-mono uppercase bg-amber-500/20 text-[#E8AB48] px-2.5 py-1 rounded-full border border-amber-500/30 font-bold">
             Sandbox Mode
@@ -191,14 +191,14 @@ function PaymentContent() {
               onClick={handleCompleteAndReturn}
               className="w-full py-3.5 rounded-full bg-[#E8AB48] text-[#140F0A] font-bold text-sm hover:bg-white transition-all shadow-xl"
             >
-              Return To Mika &amp; Co. Bakery
+              Return To La Miette Bakery
             </button>
           </div>
         )}
 
         <div className="flex items-center justify-center gap-1.5 text-[10px] font-mono text-[#FAF6EE]/40 pt-2 border-t border-[#FAF6EE]/10">
           <Lock className="w-3 h-3 text-[#E8AB48]" />
-          <span>Protected by Mika &amp; Co. Encrypted Gateway Engine</span>
+          <span>Protected by La Miette Encrypted Gateway Engine</span>
         </div>
       </div>
     </div>

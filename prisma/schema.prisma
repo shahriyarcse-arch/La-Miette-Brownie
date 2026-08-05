@@ -1,4 +1,4 @@
-// Mika & Co. — PostgreSQL Enterprise Prisma Schema
+// La Miette — PostgreSQL Enterprise Prisma Schema
 // Database: PostgreSQL / Neon Tech / Local Postgres
 
 generator client {

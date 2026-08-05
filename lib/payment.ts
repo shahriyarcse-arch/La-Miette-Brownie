@@ -1,5 +1,5 @@
 /**
- * Mika & Co. — Payment Gateway Integration Engine
+ * La Miette — Payment Gateway Integration Engine
  * Supports: bKash Direct Checkout, SSLCommerz (Cards/Nagad/Rocket), Cash on Pickup
  */
 
