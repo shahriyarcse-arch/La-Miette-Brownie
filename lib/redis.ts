@@ -1,20 +1,31 @@
 /**
- * La Miette Brownie — Redis Ultra-Fast Caching & Rate Limiting Engine
+ * La Miette — Redis Ultra-Fast Caching & Rate Limiting Engine
  * Uses Upstash Redis with In-Memory fallback for 0-ms caching
  */
 
 import { Redis } from "@upstash/redis";
 
-// Simple in-memory Cache fallback for local development
+// Simple in-memory Cache fallback for local development & build resiliency
 const inMemoryCache = new Map<string, { data: unknown; expiresAt: number }>();
 
-export const redis =
-  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
-    ? new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN,
-    })
-    : null;
+function createRedisInstance(): Redis | null {
+  try {
+    const rawUrl = process.env.UPSTASH_REDIS_REST_URL?.trim().replace(/^["']|["']$/g, "");
+    const rawToken = process.env.UPSTASH_REDIS_REST_TOKEN?.trim().replace(/^["']|["']$/g, "");
+
+    if (rawUrl && rawToken && rawUrl.startsWith("https://")) {
+      return new Redis({
+        url: rawUrl,
+        token: rawToken,
+      });
+    }
+  } catch (err) {
+    console.warn("Failed to initialize Upstash Redis client, using in-memory fallback:", err);
+  }
+  return null;
+}
+
+export const redis = createRedisInstance();
 
 /**
  * Get cached item from Redis or In-Memory Store
