@@ -11,6 +11,7 @@ export function useLenis() {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    // Respect accessibility reduced motion preference
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;
     }
@@ -21,24 +22,25 @@ export function useLenis() {
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
     });
 
     lenisRef.current = lenis;
 
-    // Sync Lenis with GSAP ScrollTrigger
+    // Sync Lenis scroll events with GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
 
-    const raf = (time: number) => {
-      lenis.raf(time * 1000);
-    };
-
-    gsap.ticker.add(raf);
-    gsap.ticker.lagSmoothing(0);
+    // Direct rAF loop for smooth 60fps/120fps scrolling
+    let rafId: number;
+    function update(time: number) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(update);
+    }
+    rafId = requestAnimationFrame(update);
 
     return () => {
-      gsap.ticker.remove(raf);
+      cancelAnimationFrame(rafId);
       lenis.destroy();
       lenisRef.current = null;
     };

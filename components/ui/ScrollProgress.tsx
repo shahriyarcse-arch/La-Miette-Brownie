@@ -7,7 +7,14 @@ export function ScrollProgress() {
   const progress = useScrollProgress();
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (typeof window !== "undefined") {
+      const lenis = (window as unknown as { lenis?: { scrollTo: (target: number) => void } }).lenis;
+      if (lenis) {
+        lenis.scrollTo(0);
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
   };
 
   return (
