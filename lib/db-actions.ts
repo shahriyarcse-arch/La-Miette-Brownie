@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { sendEmailReceipt } from "@/lib/email";
 import { checkRateLimit } from "@/lib/rate-limit";
-import { getCache, setCache, invalidateCache } from "@/lib/redis";
+import { invalidateCache } from "@/lib/redis";
 import { sendSmsNotification, SMS_TEMPLATES } from "@/lib/sms";
 
 export interface CreateOrderPayload {
@@ -109,33 +109,6 @@ export async function seedProductsIfEmpty() {
 }
 
 /**
- * Get all products from PostgreSQL database (cached with Redis for 0-ms latency)
- */
-export async function getDatabaseProducts() {
-  try {
-    // 1. Check Redis Cache first
-    const cachedProducts = await getCache<unknown>("products_catalog");
-    if (cachedProducts) {
-      return { success: true, data: cachedProducts, fromCache: true };
-    }
-
-    // 2. Cache miss — Query PostgreSQL
-    await seedProductsIfEmpty();
-    const products = await prisma.product.findMany({
-      orderBy: { createdAt: "asc" },
-    });
-
-    // 3. Save to Redis Cache (5 minutes TTL)
-    await setCache("products_catalog", products, 300);
-
-    return { success: true, data: products, fromCache: false };
-  } catch (error) {
-    console.error("Error fetching database products:", error);
-    return { success: false, error: "Failed to fetch products from database" };
-  }
-}
-
-/**
  * Create a new Order in PostgreSQL inside an atomic transaction
  */
 export async function createDatabaseOrder(payload: CreateOrderPayload) {
@@ -223,25 +196,6 @@ export async function createDatabaseOrder(payload: CreateOrderPayload) {
   } catch (error) {
     console.error("Failed to create order in PostgreSQL:", error);
     return { success: false, error: "Database transaction failed." };
-  }
-}
-
-/**
- * Get all orders from PostgreSQL for Admin Panel
- */
-export async function getDatabaseOrders() {
-  try {
-    const orders = await prisma.order.findMany({
-      include: {
-        customer: true,
-        items: true,
-      },
-      orderBy: { createdAt: "desc" },
-    });
-    return { success: true, data: orders };
-  } catch (error) {
-    console.error("Error fetching database orders:", error);
-    return { success: false, error: "Failed to fetch orders from database." };
   }
 }
 
