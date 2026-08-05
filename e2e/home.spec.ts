@@ -37,7 +37,7 @@ test.describe("La Miette Brownie - Core E2E User Journey", () => {
   });
 
   test("should handle Newsletter subscription form submission cleanly", async ({ page }) => {
-    const newsletterInput = page.locator("input[type='email']");
+    const newsletterInput = page.locator("#newsletter-email");
     await newsletterInput.scrollIntoViewIfNeeded();
     await newsletterInput.fill("customer@lamiette.com");
     await page.locator("button[type='submit']").click();

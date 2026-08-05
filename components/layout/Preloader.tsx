@@ -147,20 +147,15 @@ export function Preloader({ onComplete }: PreloaderProps) {
             <div className="space-y-4 sm:space-y-6 max-w-4xl mx-auto pointer-events-auto">
               {/* Brand Title */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
                 className="text-[3.25rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-serif text-[#221B12] tracking-tight font-bold leading-none"
               >
                 La{" "}
-                <motion.span
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  className="inline-block text-[#B06A2C] italic font-serif font-normal"
-                >
+                <span className="inline-block text-[#B06A2C] italic font-serif font-normal">
                   Miette
-                </motion.span>{" "}
+                </span>{" "}
                 Brownie
               </motion.div>
 

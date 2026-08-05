@@ -91,7 +91,7 @@ export function FeaturedProducts({
 
         {/* Grid */}
         <div className="min-h-[420px]">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="popLayout">
             <motion.div
               key={activeCategory}
               initial={{ opacity: 0, y: 30 }}
