@@ -149,13 +149,19 @@ export function Preloader({ onComplete }: PreloaderProps) {
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 className="text-[3.25rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-serif text-[#221B12] tracking-tight font-bold leading-none"
               >
                 La{" "}
-                <span className="inline-block text-[#B06A2C] italic font-serif font-normal">
+                <motion.span
+                  initial={{ opacity: 0, scale: 0.92, y: 8 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ willChange: "transform, opacity" }}
+                  className="inline-block text-[#B06A2C] italic font-serif font-normal"
+                >
                   Miette
-                </span>{" "}
+                </motion.span>{" "}
                 Brownie
               </motion.div>
 
