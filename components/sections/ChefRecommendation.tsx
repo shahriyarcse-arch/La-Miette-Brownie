@@ -1,16 +1,81 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Volume2, VolumeX, Coffee } from "lucide-react";
-import { MagneticButton } from "@/components/ui/MagneticButton";
 
 export function ChefRecommendation() {
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const gainNodeRef = useRef<GainNode | null>(null);
+  const noiseSourceRef = useRef<AudioBufferSourceNode | null>(null);
+
+  useEffect(() => {
+    return () => {
+      stopCrackle();
+    };
+  }, []);
+
+  const stopCrackle = () => {
+    try {
+      noiseSourceRef.current?.stop();
+      gainNodeRef.current?.disconnect();
+      audioContextRef.current?.close();
+    } catch {
+      // ignore already-closed context errors
+    }
+    noiseSourceRef.current = null;
+    gainNodeRef.current = null;
+    audioContextRef.current = null;
+  };
 
   const toggleCrackleSound = () => {
-    setIsPlayingAudio(!isPlayingAudio);
+    if (isPlayingAudio) {
+      stopCrackle();
+      setIsPlayingAudio(false);
+      return;
+    }
+
+    try {
+      const AudioCtx =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext })
+          .webkitAudioContext;
+      const ctx = new AudioCtx();
+      audioContextRef.current = ctx;
+
+      const bufferSize = ctx.sampleRate * 2;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        const crackle =
+          Math.random() * 2 - 1;
+        const flicker = Math.random() < 0.08 ? Math.random() * 0.8 : 0;
+        data[i] = crackle * 0.15 + flicker;
+      }
+
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.loop = true;
+
+      const gain = ctx.createGain();
+      gain.gain.value = 0.4;
+      const lowpass = ctx.createBiquadFilter();
+      lowpass.type = "lowpass";
+      lowpass.frequency.value = 900;
+
+      source.connect(lowpass);
+      lowpass.connect(gain);
+      gain.connect(ctx.destination);
+      source.start();
+
+      noiseSourceRef.current = source;
+      gainNodeRef.current = gain;
+      setIsPlayingAudio(true);
+    } catch {
+      setIsPlayingAudio(false);
+    }
   };
 
   return (
@@ -50,7 +115,10 @@ export function ChefRecommendation() {
             {/* Crackle Sound Toggle */}
             <div className="pt-2 flex items-center gap-4">
               <button
+                type="button"
                 onClick={toggleCrackleSound}
+                aria-pressed={isPlayingAudio}
+                aria-label={isPlayingAudio ? "Stop kitchen ambience audio" : "Play kitchen ambience audio"}
                 className="inline-flex items-center gap-3 px-5 py-3 rounded-full bg-[#221B12] text-[#F7F1E5] border border-[#221B12] hover:bg-[#B06A2C] transition-all font-mono text-xs uppercase shadow-md"
               >
                 {isPlayingAudio ? <Volume2 className="w-4 h-4 text-[#D9A441] animate-pulse" /> : <VolumeX className="w-4 h-4" />}
