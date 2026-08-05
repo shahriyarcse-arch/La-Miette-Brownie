@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { SIGNATURE_PRODUCTS } from "@/lib/constants";
@@ -22,6 +22,16 @@ const HERO_PRODUCTS = [
 
 export function Hero({ isPreloaderDone = true }: HeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Guarantee instant video playback across all mobile & desktop browsers when preloader finishes
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(() => {
+        // Autoplay policy fallback smoothly handled by high-res poster
+      });
+    }
+  }, [isPreloaderDone]);
 
   const CUBIC_EASE = [0.22, 1, 0.36, 1] as const;
   const HEADLINE_EASE = [0.16, 1, 0.3, 1] as const;
@@ -117,6 +127,7 @@ export function Hero({ isPreloaderDone = true }: HeroProps) {
           loop
           muted
           playsInline
+          preload="auto"
           aria-hidden="true"
           poster="/videos/hero-poster.jpg"
           className="w-full h-full object-cover object-center transform-gpu"
