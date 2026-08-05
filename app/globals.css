@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: var(--font-fraunces), "Fraunces", Georgia, serif;
+  --font-display: var(--font-fraunces), "Fraunces", Georgia, serif;
+  --font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-body: var(--font-inter), "Inter", system-ui, sans-serif;
+  --color-crumb: #F7F1E5;
+  --color-ink: #221B12;
+  --color-ink-soft: #4A3F2E;
+  --color-honey: #D9A441;
+  --color-caramel: #B06A2C;
+  --color-accent: #C9853B;
+}
+
+@layer base {
+  :root {
+    --crumb: #F7F1E5;
+    --ink: #221B12;
+    --ink-soft: #4A3F2E;
+    --honey: #D9A441;
+    --caramel: #B06A2C;
+    --accent: #C9853B;
+    --radius: 22px;
+    --font-fraunces: 'Fraunces', Georgia, serif;
+    --font-inter: 'Inter', system-ui, sans-serif;
+    --font-display: var(--font-fraunces);
+    --font-body: var(--font-inter);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--crumb);
+    color: var(--ink);
+    font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
+  }
+
+  body {
+    overflow-x: hidden;
+    background-color: var(--crumb);
+    color: var(--ink);
+    font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-serif, .font-display {
+    font-family: var(--font-fraunces), 'Fraunces', Georgia, serif;
+  }
+
+  ::selection {
+    background: var(--honey);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--caramel);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+/* Disabled grain overlay for crisp, crystal-clear HD video & visual quality */
+.grain {
+  display: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--crumb);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--caramel);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--honey);
+}
+
+/* Hide scrollbar for clean horizontal scrolls */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes slowspin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+
+/* =========================================
+   PREMIUM GLOBAL BEHAVIOURS
+   ========================================= */
+
+/* Hide Hero background image during Frame 0 HTML load before React hydrates */
+.ssr-loading .hero-bg-poster {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* 1. Custom Brand Selection Color (Overrides default blue) */
+::selection {
+  background: var(--caramel);
+  color: var(--crumb);
+}
+::-moz-selection {
+  background: var(--caramel);
+  color: var(--crumb);
+}
+
+/* 2. Custom Minimal Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--crumb);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ink-soft);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--caramel);
+}
+
+/* 3. Prevent Mobile Tap Highlight */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 4. Prevent Image & Video Dragging (Premium Feel) */
+img, video {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-select: none;
+}
+
+/* 5. Gold Shimmer & Luxury Typography Effects */
+@keyframes goldShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.text-gold-shimmer {
+  background: linear-gradient(135deg, #221B12 0%, #B06A2C 30%, #D9A441 50%, #B06A2C 70%, #221B12 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmer 8s ease infinite;
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #D9A441 0%, #F5D77F 45%, #B06A2C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Subtle Tracking Spread on Hover for Monospace Sub-titles */
+.tracking-expand {
+  transition: letter-spacing 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tracking-expand:hover {
+  letter-spacing: 0.35em !important;
+}
+
+
