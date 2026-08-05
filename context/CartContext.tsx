@@ -87,6 +87,35 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  // Real-time sync across browser tabs (e.g. admin dashboard + storefront)
+  useEffect(() => {
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === CART_STORAGE_KEY && e.newValue) {
+        try {
+          setCartItems(JSON.parse(e.newValue));
+        } catch {
+          // ignore malformed storage payloads
+        }
+      }
+      if (e.key === ORDERS_STORAGE_KEY && e.newValue) {
+        try {
+          setOrders(JSON.parse(e.newValue));
+        } catch {
+          // ignore malformed storage payloads
+        }
+      }
+      if (e.key === STOCK_STORAGE_KEY && e.newValue) {
+        try {
+          setProductStock(JSON.parse(e.newValue));
+        } catch {
+          // ignore malformed storage payloads
+        }
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
   // Save cart to localStorage whenever cartItems updates
   useEffect(() => {
     if (!isLoaded) return;
