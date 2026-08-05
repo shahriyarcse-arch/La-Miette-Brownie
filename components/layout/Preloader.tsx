@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 
 interface PreloaderProps {
   onComplete?: () => void;
@@ -15,9 +15,8 @@ export function Preloader({ onComplete }: PreloaderProps) {
   onCompleteRef.current = onComplete;
 
   const progress = useMotionValue(0);
-  const smoothProgress = useSpring(progress, { stiffness: 130, damping: 24, mass: 1 });
-  const progressWidth = useTransform(smoothProgress, (v) => `${v}%`);
-  const progressText = useTransform(smoothProgress, (v) => Math.floor(v));
+  const progressWidth = useTransform(progress, (v) => `${v}%`);
+  const progressText = useTransform(progress, (v) => Math.floor(v));
 
   useEffect(() => {
     if (typeof document !== "undefined") {
@@ -61,7 +60,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       if (t >= 1 && pageReadyRef.current) {
         if (!completedRef.current) {
           completedRef.current = true;
-          smoothProgress.jump(100);
+          progress.set(100);
           // Wait 150ms at 100% before smooth slide up
           setTimeout(() => {
             setIsLoading(false);
@@ -82,7 +81,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       cancelAnimationFrame(animationFrameId);
       if (!completedRef.current) {
         completedRef.current = true;
-        smoothProgress.jump(100);
+        progress.set(100);
         setIsLoading(false);
         onCompleteRef.current?.();
       }
@@ -94,7 +93,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       window.removeEventListener("load", markPageReady);
       document.removeEventListener("DOMContentLoaded", markPageReady);
     };
-  }, [progress, smoothProgress]);
+  }, [progress]);
 
   return (
     <AnimatePresence mode="wait">
