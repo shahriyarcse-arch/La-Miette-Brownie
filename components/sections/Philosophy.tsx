@@ -59,7 +59,7 @@ export function Philosophy() {
               Joy Is In The Details
             </h2>
             <p className="text-[#4A3F2E] text-base md:text-lg leading-relaxed font-normal">
-              In a fast-paced world, we slow down. True indulgence cannot be rushed by machines or chemical shortcuts. At La Miette Bakes, we wake up before dawn to honor the quiet rhythm of melting chocolate, whipping cream, and folding batters by hand.
+              In a fast-paced world, we slow down. True indulgence cannot be rushed by machines or chemical shortcuts. At La Miette Brownie, we wake up before dawn to honor the quiet rhythm of melting chocolate, whipping cream, and folding batters by hand.
             </p>
             <p className="text-[#4A3F2E]/90 text-sm leading-relaxed">
               Every morning, our pastry chefs handcraft every single brownie, cake, and pudding. Guided by a dedication to French pastry techniques, our desserts carry the warmth of roasted hazelnuts, shiny crinkled crusts, and intensely rich fudgy centers.

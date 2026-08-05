@@ -1,12 +1,12 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("La Miette Bakes - SEO, Image Loading & Console Hygiene", () => {
+test.describe("La Miette Brownie - SEO, Image Loading & Console Hygiene", () => {
   test("should have correct page title and Meta OpenGraph tags", async ({ page }) => {
     await page.goto("/");
-    await expect(page).toHaveTitle(/La Miette Bakes • Luxury Dessert Boutique/);
+    await expect(page).toHaveTitle(/La Miette Brownie • Luxury Dessert Boutique/);
 
     const ogTitle = await page.locator("meta[property='og:title']").getAttribute("content");
-    expect(ogTitle).toContain("La Miette Bakes");
+    expect(ogTitle).toContain("La Miette Brownie");
 
     const metaDescription = await page.locator("meta[name='description']").getAttribute("content");
     expect(metaDescription).toContain("Dhaka");

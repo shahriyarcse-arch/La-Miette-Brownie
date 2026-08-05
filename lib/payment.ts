@@ -1,5 +1,5 @@
 /**
- * La Miette Bakes — Payment Gateway Integration Engine
+ * La Miette Brownie — Payment Gateway Integration Engine
  * Supports: bKash Direct Checkout, SSLCommerz (Cards/Nagad/Rocket), Cash on Pickup
  */
 

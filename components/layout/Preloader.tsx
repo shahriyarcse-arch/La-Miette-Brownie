@@ -167,7 +167,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
                 >
                   Miette
                 </motion.span>{" "}
-                Bakes
+                Brownie
               </motion.div>
 
               {/* Gold Line Divider */}

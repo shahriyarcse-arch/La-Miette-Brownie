@@ -366,7 +366,7 @@ export default function AdminDashboard() {
                 <Lock className="w-7 h-7 text-[#0F0D0A]" />
               </div>
               <h1 className="text-2xl font-serif font-bold text-[#F7F1E5]">
-                La Miette Bakes
+                La Miette Brownie
               </h1>
               <p className="text-[#F7F1E5]/40 text-xs font-mono mt-1 tracking-widest uppercase">
                 Admin Dashboard
@@ -443,7 +443,7 @@ export default function AdminDashboard() {
             </div>
             <div>
               <h1 className="text-sm font-serif font-bold text-[#F7F1E5] leading-tight">
-                La Miette Bakes
+                La Miette Brownie
               </h1>
               <p className="text-[9px] font-mono text-[#F7F1E5]/35 uppercase tracking-widest">
                 Bakery Control

@@ -268,7 +268,7 @@ export const SEASONAL_COLLECTION: SeasonalItem[] = [
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: "t1",
-    quote: "The Belgian Fudgy Brownie from La Miette Bakes is hands down the best brownie I have ever tasted in Dhaka! The crinkled top and gooey chocolate core are unreal.",
+    quote: "The Belgian Fudgy Brownie from La Miette Brownie is hands down the best brownie I have ever tasted in Dhaka! The crinkled top and gooey chocolate core are unreal.",
     author: "Amina Rahman",
     role: "Food Critic & Blogger",
     location: "Gulshan, Dhaka",

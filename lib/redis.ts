@@ -1,5 +1,5 @@
 /**
- * La Miette Bakes — Redis Ultra-Fast Caching & Rate Limiting Engine
+ * La Miette Brownie — Redis Ultra-Fast Caching & Rate Limiting Engine
  * Uses Upstash Redis with In-Memory fallback for 0-ms caching
  */
 

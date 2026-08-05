@@ -1,4 +1,4 @@
-// La Miette Bakes — PostgreSQL Enterprise Prisma Schema
+// La Miette Brownie — PostgreSQL Enterprise Prisma Schema
 // Database: PostgreSQL / Neon Tech / Local Postgres
 
 generator client {
