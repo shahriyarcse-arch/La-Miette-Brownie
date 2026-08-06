@@ -7,6 +7,7 @@ import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { CartProvider } from "@/context/CartContext";
 import { MotionProvider } from "@/components/ui/MotionProvider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -119,6 +120,7 @@ export default function RootLayout({
           </MotionProvider>
         </CartProvider>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
