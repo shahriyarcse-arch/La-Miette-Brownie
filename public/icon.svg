@@ -1,42 +1,77 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#24180E" />
-      <stop offset="50%" stop-color="#18100A" />
-      <stop offset="100%" stop-color="#0E0805" />
+    <!-- Rich Belgian Dark Cocoa Background -->
+    <radialGradient id="cocoaBase" cx="50%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#2D1D13" />
+      <stop offset="60%" stop-color="#190F09" />
+      <stop offset="100%" stop-color="#0E0704" />
+    </radialGradient>
+
+    <!-- Authentic Parisian Gold Leaf Gradient -->
+    <linearGradient id="parisianGold" x1="15%" y1="10%" x2="85%" y2="90%">
+      <stop offset="0%" stop-color="#FFF3D1" />
+      <stop offset="25%" stop-color="#F7D488" />
+      <stop offset="50%" stop-color="#DDA038" />
+      <stop offset="75%" stop-color="#B87B1D" />
+      <stop offset="100%" stop-color="#844F0B" />
     </linearGradient>
-    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FFE8A3" />
-      <stop offset="35%" stop-color="#F3C363" />
-      <stop offset="70%" stop-color="#D9A441" />
-      <stop offset="100%" stop-color="#A6731B" />
-    </linearGradient>
-    <linearGradient id="innerGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#D9A441" stop-opacity="0.3" />
-      <stop offset="100%" stop-color="#24180E" stop-opacity="0" />
-    </linearGradient>
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="8" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+
+    <!-- Warm Gold Foil Glow & Shadow -->
+    <filter id="subtleFoil" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.8" />
     </filter>
   </defs>
 
-  <rect width="512" height="512" rx="128" fill="url(#bgGrad)" />
-  <rect x="12" y="12" width="488" height="488" rx="116" fill="none" stroke="url(#goldGrad)" stroke-width="6" stroke-opacity="0.6" />
-  <rect x="24" y="24" width="464" height="464" rx="104" fill="url(#innerGlow)" />
+  <!-- Background Plaque -->
+  <rect width="512" height="512" rx="100" fill="url(#cocoaBase)" />
+  
+  <!-- Outer Gold Border -->
+  <rect x="20" y="20" width="472" height="472" rx="84" fill="none" stroke="url(#parisianGold)" stroke-width="3" opacity="0.85" />
+  
+  <!-- Inner Fine Beaded Border Ring -->
+  <circle cx="256" cy="256" r="220" fill="none" stroke="url(#parisianGold)" stroke-width="1.5" stroke-dasharray="4 6" opacity="0.45" />
+  <circle cx="256" cy="256" r="206" fill="none" stroke="url(#parisianGold)" stroke-width="1" opacity="0.7" />
 
-  <path d="M370 120 Q370 145 395 145 Q370 145 370 170 Q370 145 345 145 Q370 145 370 120 Z" fill="url(#goldGrad)" filter="url(#glow)" />
-  <circle cx="370" cy="145" r="3" fill="#FFF8E7" />
-
-  <g fill="url(#goldGrad)" filter="url(#glow)">
-    <path d="M140 160 L185 160 C185 240 185 285 185 315 C185 328 192 332 205 332 L260 332 C265 332 268 335 268 340 L265 352 C265 356 260 358 255 358 L145 358 C135 358 130 352 130 342 L130 175 C130 165 134 160 140 160 Z" />
-    <path d="M260 358 L285 165 C286 160 292 156 298 156 L325 156 C332 156 338 160 342 166 L368 255 L395 166 C399 160 405 156 412 156 L438 156 C445 156 450 161 448 168 L420 358 C419 364 413 368 406 368 L385 368 C378 368 373 364 372 358 L388 235 L355 345 C353 351 347 355 341 355 L328 355 C322 355 317 351 315 345 L280 235 L295 358 C296 364 291 368 284 368 L268 368 C262 368 258 364 260 358 Z" />
+  <!-- Artisanal Cocoa Pod / Wheat Top Crest -->
+  <g transform="translate(256, 120)" fill="url(#parisianGold)" filter="url(#subtleFoil)">
+    <path d="M0 -34 C16 -18 20 8 0 28 C-20 8 -16 -18 0 -34 Z" fill="url(#parisianGold)" />
+    <path d="M0 -28 C0 0 0 10 0 24" stroke="#190F09" stroke-width="1.5" stroke-linecap="round" fill="none" />
+    <path d="M-6 -8 C-22 -20 -38 -12 -38 4 C-26 12 -12 2 -6 -8 Z" opacity="0.9" />
+    <path d="M6 -8 C22 -20 38 -12 38 4 C26 12 12 2 6 -8 Z" opacity="0.9" />
+    <circle cx="-50" cy="8" r="2.5" />
+    <circle cx="50" cy="8" r="2.5" />
+    <circle cx="-62" cy="12" r="1.5" />
+    <circle cx="62" cy="12" r="1.5" />
   </g>
 
-  <text x="256" y="425" text-anchor="middle" fill="#E8AB48" font-family="'Times New Roman', serif" font-size="28" font-weight="bold" letter-spacing="8" opacity="0.9">
+  <!-- Central Brand Monogram Shield -->
+  <g transform="translate(256, 218)" fill="url(#parisianGold)" filter="url(#subtleFoil)">
+    <path d="M-55 -42 L-36 -42 L-36 28 C-36 34 -32 38 -24 38 L-4 38 C-2 38 0 40 0 42 L-2 46 C-3 48 -6 49 -10 49 L-62 49 C-66 49 -69 46 -69 41 L-69 -37 C-69 -41 -66 -42 -55 -42 Z" />
+    <path d="M-10 49 L-2 -38 C-1 -42 2 -45 8 -45 L20 -45 C26 -45 30 -42 33 -36 L52 14 L71 -36 C74 -42 78 -45 84 -45 L96 -45 C102 -45 105 -42 106 -38 L114 49 C114 52 110 55 106 55 L92 55 C88 55 85 52 84 48 L78 -10 L59 36 C57 40 53 43 48 43 L44 43 C39 43 35 40 33 36 L14 -10 L8 48 C7 52 4 55 0 55 L-6 55 C-9 55 -10 52 -10 49 Z" />
+    <polygon points="21,-54 25,-48 21,-42 17,-48" fill="#FFF3D1" />
+  </g>
+
+  <!-- Brand Typography: LA MIETTE -->
+  <text x="256" y="340" text-anchor="middle" fill="url(#parisianGold)" font-family="'Didot', 'Bodoni MT', 'Fraunces', 'Cinzel', 'Georgia', serif" font-size="36" font-weight="700" letter-spacing="9" filter="url(#subtleFoil)">
     LA MIETTE
   </text>
-  <text x="256" y="455" text-anchor="middle" fill="#D9A441" font-family="'Helvetica Neue', sans-serif" font-size="16" font-weight="600" letter-spacing="6" opacity="0.75">
-    DHAKA
+
+  <!-- Divider Line with Diamond -->
+  <g transform="translate(256, 362)" fill="url(#parisianGold)" opacity="0.8">
+    <line x1="-120" y1="0" x2="-22" y2="0" stroke="url(#parisianGold)" stroke-width="1" />
+    <polygon points="0,-4 4,0 0,4 -4,0" />
+    <circle cx="-14" cy="0" r="1.5" />
+    <circle cx="14" cy="0" r="1.5" />
+    <line x1="22" y1="0" x2="120" y2="0" stroke="url(#parisianGold)" stroke-width="1" />
+  </g>
+
+  <!-- Sub-brand Typography: BROWNIE -->
+  <text x="256" y="402" text-anchor="middle" fill="url(#parisianGold)" font-family="'Didot', 'Bodoni MT', 'Fraunces', 'Cinzel', 'Trajan Pro', 'Georgia', serif" font-size="24" font-weight="600" letter-spacing="14" filter="url(#subtleFoil)">
+    BROWNIE
+  </text>
+
+  <!-- Subtle Artisanal Quality Stamp at Bottom -->
+  <text x="256" y="440" text-anchor="middle" fill="#DDA038" font-family="'Helvetica Neue', 'Arial', sans-serif" font-size="10.5" font-weight="600" letter-spacing="6" opacity="0.65">
+    PUR LUXE CHOCOLATIER
   </text>
 </svg>
