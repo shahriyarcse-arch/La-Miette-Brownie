@@ -4,8 +4,6 @@ import { useState, useEffect } from "react";
 import { ShoppingBag, Menu, X } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
-import Image from "next/image";
-
 interface NavbarProps {
   cartCount?: number;
   onOpenCart?: () => void;
@@ -72,11 +70,12 @@ export function Navbar({ cartCount = 0, onOpenCart }: NavbarProps) {
           }`}
         >
           {/* Logo */}
-          <a
-            href="/"
+          <button
+            type="button"
             onClick={handleScrollToTop}
             data-cursor="La Miette Brownie"
-            className="flex items-center gap-2.5 sm:gap-3 group shrink-0 whitespace-nowrap cursor-pointer"
+            className="flex items-center gap-2.5 sm:gap-3 group shrink-0 whitespace-nowrap cursor-pointer text-left bg-transparent border-0 p-0"
+            aria-label="Scroll to top"
           >
             <span className="w-2.5 h-2.5 rounded-full bg-[#E8AB48] shadow-[0_0_10px_rgba(232,171,72,0.9)] transition-transform duration-300 group-hover:scale-125" />
             <span className={`text-xl md:text-2xl font-serif font-bold tracking-tight whitespace-nowrap transition-colors duration-300 ${
@@ -84,7 +83,7 @@ export function Navbar({ cartCount = 0, onOpenCart }: NavbarProps) {
             }`}>
               La Miette Brownie
             </span>
-          </a>
+          </button>
 
           {/* Desktop Nav Links */}
           <nav className="hidden lg:flex items-center gap-5 xl:gap-7 shrink-0">

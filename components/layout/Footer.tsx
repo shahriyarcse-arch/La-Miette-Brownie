@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Instagram, Facebook, Twitter, MapPin, Clock, Phone, X, ShieldCheck, FileText, AlertCircle } from "lucide-react";
-import Image from "next/image";
 
 type ModalType = "privacy" | "terms" | "allergen" | null;
 
@@ -34,8 +33,8 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 pb-16 border-b border-[#FAF6EE]/10">
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-6">
-            <a
-              href="/"
+            <button
+              type="button"
               onClick={(e) => {
                 e.preventDefault();
                 if (typeof window !== "undefined") {
@@ -51,13 +50,14 @@ export function Footer() {
                   }
                 }
               }}
-              className="flex items-center gap-3 group cursor-pointer w-fit"
+              className="flex items-center gap-3 group cursor-pointer w-fit text-left bg-transparent border-0 p-0"
+              aria-label="Scroll to top"
             >
               <span className="w-3 h-3 rounded-full bg-[#E8AB48] shadow-[0_0_12px_rgba(232,171,72,0.9)] transition-transform duration-300 group-hover:scale-125" />
               <span className="text-2xl md:text-3xl font-serif font-bold text-[#FAF6EE] tracking-tight group-hover:text-[#E8AB48] transition-colors duration-300">
                 La Miette Brownie
               </span>
-            </a>
+            </button>
             <p className="text-[#FAF6EE]/70 text-sm leading-relaxed max-w-sm font-sans">
               Artisanal luxury dessert boutique &amp; cake studio. Handcrafting intensely rich Belgian chocolate brownies, molten cheesecakes, and NYC-style chunky cookies daily with pure passion in Dhaka.
             </p>
