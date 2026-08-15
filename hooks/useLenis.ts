@@ -11,6 +11,16 @@ export function useLenis() {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    // Force manual scroll restoration so reloads always start at top Hero section
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      if (!window.location.hash) {
+        window.scrollTo(0, 0);
+      }
+    }
+
     // Respect accessibility reduced motion preference
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;
@@ -28,6 +38,11 @@ export function useLenis() {
 
     lenisRef.current = lenis;
     (window as unknown as { __lenis?: Lenis | null }).__lenis = lenis;
+
+    // Immediately reset Lenis scroll position to top if no URL hash anchor is targeted
+    if (!window.location.hash) {
+      lenis.scrollTo(0, { immediate: true });
+    }
 
     // Sync Lenis scroll events with GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
