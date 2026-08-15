@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/admin/", "/api/"],
     },
-    sitemap: "https://lamiette.com/sitemap.xml",
+    sitemap: "https://www.lamiettebrownie.me/sitemap.xml",
   };
 }

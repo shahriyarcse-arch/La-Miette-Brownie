@@ -24,10 +24,23 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://lamiette.com"),
+  metadataBase: new URL("https://www.lamiettebrownie.me"),
   title: "La Miette Brownie • Luxury Dessert Boutique & Cake Studio | Dhaka",
   description:
     "Handcrafted Belgian chocolate brownies, molten cheesecakes, and chunky cookies baked fresh daily in Dhaka.",
+  keywords: [
+    "La Miette Brownie",
+    "lamiettebrownie",
+    "lamiette brownie",
+    "la miette",
+    "lamiette",
+    "brownie dhaka",
+    "best brownies in dhaka",
+    "belgian chocolate brownies dhaka",
+    "luxury dessert dhaka",
+    "gulshan bakery",
+    "artisanal bakery dhaka",
+  ],
   alternates: {
     canonical: "/",
   },
@@ -38,7 +51,7 @@ export const metadata: Metadata = {
     siteName: "La Miette Brownie",
     type: "website",
     locale: "en_US",
-    url: "https://lamiette.com/",
+    url: "https://www.lamiettebrownie.me/",
     images: [
       {
         url: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1200&auto=format&fit=crop",
@@ -61,12 +74,16 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  verification: {
+    google: "googlebbcc83711ac69414",
+  },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Bakery",
   name: "La Miette Brownie",
+  url: "https://www.lamiettebrownie.me",
   image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1200",
   description: "Artisanal luxury dessert boutique specializing in Belgian dark chocolate brownies, Basque burnt cheesecakes, and NYC-style cookies.",
   address: {
