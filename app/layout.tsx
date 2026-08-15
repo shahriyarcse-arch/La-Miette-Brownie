@@ -74,6 +74,16 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/apple-icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: ["/icon.svg"],
+  },
   verification: {
     google: "googlebbcc83711ac69414",
   },
@@ -84,6 +94,7 @@ const jsonLd = {
   "@type": "Bakery",
   name: "La Miette Brownie",
   url: "https://www.lamiettebrownie.me",
+  logo: "https://www.lamiettebrownie.me/icon.svg",
   image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1200",
   description: "Artisanal luxury dessert boutique specializing in Belgian dark chocolate brownies, Basque burnt cheesecakes, and NYC-style cookies.",
   address: {
