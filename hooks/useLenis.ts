@@ -21,17 +21,9 @@ export function useLenis() {
       }
     }
 
-    // Reset scroll on beforeunload to prevent browser from caching non-zero scroll position
-    const handleBeforeUnload = () => {
-      window.scrollTo(0, 0);
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
     // Respect accessibility reduced motion preference
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return () => {
-        window.removeEventListener("beforeunload", handleBeforeUnload);
-      };
+      return;
     }
 
     const lenis = new Lenis({
@@ -65,7 +57,6 @@ export function useLenis() {
 
     return () => {
       cancelAnimationFrame(rafId);
-      window.removeEventListener("beforeunload", handleBeforeUnload);
       lenis.destroy();
       (window as unknown as { __lenis?: Lenis | null }).__lenis = null;
       lenisRef.current = null;
