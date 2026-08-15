@@ -60,10 +60,27 @@ export default function Home() {
   // Force scroll to top on reload for premium hero entrance experience
   useEffect(() => {
     if (typeof window !== "undefined") {
-      window.history.scrollRestoration = "manual";
-      window.scrollTo(0, 0);
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      if (!window.location.hash) {
+        window.scrollTo(0, 0);
+      }
     }
   }, []);
+
+  // Guarantee clean zero scroll position after Preloader completes
+  useEffect(() => {
+    if (isPreloaderDone && typeof window !== "undefined" && !window.location.hash) {
+      window.scrollTo(0, 0);
+      const win = window as unknown as {
+        __lenis?: { scrollTo: (target: number | string, opts?: { immediate?: boolean; force?: boolean }) => void };
+      };
+      if (win.__lenis) {
+        win.__lenis.scrollTo(0, { immediate: true, force: true });
+      }
+    }
+  }, [isPreloaderDone]);
 
   // Accessible Escape Key Handler (WCAG 2.2)
   useEffect(() => {

@@ -40,13 +40,12 @@ export function Footer() {
                 e.preventDefault();
                 if (typeof window !== "undefined") {
                   const win = window as unknown as {
-                    __lenis?: { scrollTo: (target: number | string, opts?: { duration?: number }) => void };
+                    __lenis?: { scrollTo: (target: number | string, opts?: { duration?: number; force?: boolean }) => void };
                   };
                   if (win.__lenis) {
-                    win.__lenis.scrollTo(0, { duration: 1.6 });
-                  } else {
-                    window.scrollTo({ top: 0, behavior: "smooth" });
+                    win.__lenis.scrollTo(0, { duration: 1.6, force: true });
                   }
+                  window.scrollTo({ top: 0, behavior: "smooth" });
                   if (window.location.hash) {
                     window.history.replaceState(null, "", window.location.pathname);
                   }
