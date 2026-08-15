@@ -35,26 +35,10 @@ export function Footer() {
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center gap-3">
-              {/* Royal Gold LM Crest Badge */}
-              <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-[#2D1C10] via-[#1A1008] to-[#0E0704] border border-[#D9A441]/60 shadow-[0_2px_12px_rgba(217,164,65,0.3)]">
-                <span className="font-serif font-bold text-base text-transparent bg-clip-text bg-gradient-to-br from-[#FFF5D6] via-[#F2CA72] to-[#CFA03E] tracking-wider">
-                  LM
-                </span>
-                <span className="absolute -top-1 -right-1 text-[9px] text-[#F3CC77] leading-none">✦</span>
-              </div>
-              <div className="flex flex-col justify-center">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-2xl md:text-3xl font-serif font-bold text-[#FAF6EE] tracking-tight leading-none">
-                    La Miette
-                  </span>
-                  <span className="text-xs md:text-sm font-serif font-semibold tracking-[0.18em] uppercase text-[#D9A441] leading-none">
-                    Brownie
-                  </span>
-                </div>
-                <span className="text-[8.5px] font-sans font-semibold tracking-[0.22em] uppercase text-[#D9A441]/80 mt-1">
-                  Luxury Dessert Boutique &amp; Cake Studio
-                </span>
-              </div>
+              <span className="w-3 h-3 rounded-full bg-[#E8AB48] shadow-[0_0_12px_rgba(232,171,72,0.9)]" />
+              <span className="text-2xl md:text-3xl font-serif font-bold text-[#FAF6EE] tracking-tight">
+                La Miette Brownie
+              </span>
             </div>
             <p className="text-[#FAF6EE]/70 text-sm leading-relaxed max-w-sm font-sans">
               Artisanal luxury dessert boutique &amp; cake studio. Handcrafting intensely rich Belgian chocolate brownies, molten cheesecakes, and NYC-style chunky cookies daily with pure passion in Dhaka.

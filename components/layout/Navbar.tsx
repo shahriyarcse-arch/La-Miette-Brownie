@@ -61,30 +61,12 @@ export function Navbar({ cartCount = 0, onOpenCart }: NavbarProps) {
             data-cursor="La Miette Brownie"
             className="flex items-center gap-2.5 sm:gap-3 group shrink-0 whitespace-nowrap"
           >
-            {/* Royal Gold LM Crest Badge */}
-            <div className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-[#2D1C10] via-[#1A1008] to-[#0E0704] border border-[#D9A441]/60 shadow-[0_2px_10px_rgba(217,164,65,0.25)] transition-all duration-300 group-hover:scale-105 group-hover:border-[#F2CA72] group-hover:shadow-[0_0_14px_rgba(232,171,72,0.45)]">
-              <span className="font-serif font-bold text-xs sm:text-sm text-transparent bg-clip-text bg-gradient-to-br from-[#FFF5D6] via-[#F2CA72] to-[#CFA03E] tracking-wider">
-                LM
-              </span>
-              <span className="absolute -top-1 -right-1 text-[8px] text-[#F3CC77] leading-none">✦</span>
-            </div>
-
-            {/* Brand Typography */}
-            <div className="flex flex-col justify-center">
-              <div className="flex items-baseline gap-1.5">
-                <span className={`text-lg sm:text-xl md:text-2xl font-serif font-bold tracking-tight leading-none transition-colors duration-300 ${
-                  isScrolled ? "text-[#1C130B]" : "text-[#FAF6EE] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
-                }`}>
-                  La Miette
-                </span>
-                <span className="text-[10px] sm:text-xs font-serif font-semibold tracking-[0.16em] uppercase text-[#D9A441] leading-none">
-                  Brownie
-                </span>
-              </div>
-              <span className="text-[7.5px] sm:text-[8px] font-sans font-semibold tracking-[0.24em] uppercase text-[#D9A441]/80 mt-0.5">
-                Artisanal Boutique
-              </span>
-            </div>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#E8AB48] shadow-[0_0_10px_rgba(232,171,72,0.9)] transition-transform duration-300 group-hover:scale-125" />
+            <span className={`text-xl md:text-2xl font-serif font-bold tracking-tight whitespace-nowrap transition-colors duration-300 ${
+              isScrolled ? "text-[#1C130B]" : "text-[#FAF6EE] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+            }`}>
+              La Miette Brownie
+            </span>
           </a>
 
           {/* Desktop Nav Links */}
