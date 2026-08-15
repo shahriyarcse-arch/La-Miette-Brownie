@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Instagram, Facebook, Twitter, MapPin, Clock, Phone, X, ShieldCheck, FileText, AlertCircle } from "lucide-react";
+import Image from "next/image";
 
 type ModalType = "privacy" | "terms" | "allergen" | null;
 
@@ -18,10 +19,14 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-[#18120C] text-[#FAF6EE]/80 pt-24 pb-12 border-t border-[#FAF6EE]/10 relative overflow-hidden">
+    <footer className="bg-[#120B06] text-[#FAF6EE] pt-24 pb-12 border-t border-[#D9A441]/20 relative overflow-hidden">
+      {/* Glow Effects */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#D9A441]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#8B5A2B]/10 rounded-full blur-3xl pointer-events-none" />
+
       <motion.div
-        initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.1 }}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         className="max-w-7xl mx-auto px-6 md:px-12 relative z-10"
@@ -29,8 +34,14 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 pb-16 border-b border-[#FAF6EE]/10">
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="flex items-center gap-2.5">
-              <span className="w-3 h-3 rounded-full bg-[#E8AB48] shadow-[0_0_12px_rgba(232,171,72,0.8)]" />
+            <div className="flex items-center gap-3">
+              <Image
+                src="/icon.svg"
+                alt="La Miette Brownie Emblem"
+                width={36}
+                height={36}
+                className="w-9 h-9 rounded-xl border border-[#D9A441]/50 shadow-[0_2px_12px_rgba(217,164,65,0.35)] object-contain"
+              />
               <span className="text-2xl md:text-3xl font-serif font-bold text-[#FAF6EE] tracking-tight">
                 La Miette Brownie
               </span>

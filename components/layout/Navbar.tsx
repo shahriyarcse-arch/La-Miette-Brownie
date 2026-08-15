@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { ShoppingBag, Menu, X } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
+import Image from "next/image";
+
 interface NavbarProps {
   cartCount?: number;
   onOpenCart?: () => void;
@@ -59,7 +61,13 @@ export function Navbar({ cartCount = 0, onOpenCart }: NavbarProps) {
             data-cursor="La Miette Brownie"
             className="flex items-center gap-2.5 group shrink-0 whitespace-nowrap"
           >
-            <span className="w-2.5 h-2.5 rounded-full bg-[#E8AB48] transition-transform duration-300 group-hover:scale-150 shadow-[0_0_10px_rgba(232,171,72,0.8)]" />
+            <Image
+              src="/icon.svg"
+              alt="La Miette Brownie Emblem"
+              width={32}
+              height={32}
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-[#D9A441]/40 shadow-[0_2px_8px_rgba(217,164,65,0.3)] object-contain transition-transform duration-300 group-hover:scale-105"
+            />
             <span className={`text-xl md:text-2xl font-serif font-bold tracking-tight whitespace-nowrap transition-colors duration-300 ${
               isScrolled ? "text-[#1C130B]" : "text-[#FAF6EE] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
             }`}>
