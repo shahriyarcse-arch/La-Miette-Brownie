@@ -34,12 +34,31 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 pb-16 border-b border-[#FAF6EE]/10">
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="flex items-center gap-3">
-              <span className="w-3 h-3 rounded-full bg-[#E8AB48] shadow-[0_0_12px_rgba(232,171,72,0.9)]" />
-              <span className="text-2xl md:text-3xl font-serif font-bold text-[#FAF6EE] tracking-tight">
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                if (typeof window !== "undefined") {
+                  const win = window as unknown as {
+                    __lenis?: { scrollTo: (target: number | string, opts?: { duration?: number }) => void };
+                  };
+                  if (win.__lenis) {
+                    win.__lenis.scrollTo(0, { duration: 1.6 });
+                  } else {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }
+                  if (window.location.hash) {
+                    window.history.replaceState(null, "", window.location.pathname);
+                  }
+                }
+              }}
+              className="flex items-center gap-3 group cursor-pointer w-fit"
+            >
+              <span className="w-3 h-3 rounded-full bg-[#E8AB48] shadow-[0_0_12px_rgba(232,171,72,0.9)] transition-transform duration-300 group-hover:scale-125" />
+              <span className="text-2xl md:text-3xl font-serif font-bold text-[#FAF6EE] tracking-tight group-hover:text-[#E8AB48] transition-colors duration-300">
                 La Miette Brownie
               </span>
-            </div>
+            </a>
             <p className="text-[#FAF6EE]/70 text-sm leading-relaxed max-w-sm font-sans">
               Artisanal luxury dessert boutique &amp; cake studio. Handcrafting intensely rich Belgian chocolate brownies, molten cheesecakes, and NYC-style chunky cookies daily with pure passion in Dhaka.
             </p>

@@ -27,6 +27,7 @@ export function useLenis() {
     });
 
     lenisRef.current = lenis;
+    (window as unknown as { __lenis?: Lenis | null }).__lenis = lenis;
 
     // Sync Lenis scroll events with GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
@@ -42,6 +43,7 @@ export function useLenis() {
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      (window as unknown as { __lenis?: Lenis | null }).__lenis = null;
       lenisRef.current = null;
     };
   }, []);

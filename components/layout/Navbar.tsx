@@ -45,6 +45,23 @@ export function Navbar({ cartCount = 0, onOpenCart }: NavbarProps) {
     { label: "Visit Us", href: "#locations" },
   ];
 
+  const handleScrollToTop = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (typeof window !== "undefined") {
+      const win = window as unknown as {
+        __lenis?: { scrollTo: (target: number | string, opts?: { duration?: number }) => void };
+      };
+      if (win.__lenis) {
+        win.__lenis.scrollTo(0, { duration: 1.4 });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      if (window.location.hash) {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    }
+  };
+
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-[9000] px-3 sm:px-6 pt-3 sm:pt-4 pointer-events-none transition-all duration-300 select-none">
@@ -57,9 +74,10 @@ export function Navbar({ cartCount = 0, onOpenCart }: NavbarProps) {
         >
           {/* Logo */}
           <a
-            href="#"
+            href="/"
+            onClick={handleScrollToTop}
             data-cursor="La Miette Brownie"
-            className="flex items-center gap-2.5 sm:gap-3 group shrink-0 whitespace-nowrap"
+            className="flex items-center gap-2.5 sm:gap-3 group shrink-0 whitespace-nowrap cursor-pointer"
           >
             <span className="w-2.5 h-2.5 rounded-full bg-[#E8AB48] shadow-[0_0_10px_rgba(232,171,72,0.9)] transition-transform duration-300 group-hover:scale-125" />
             <span className={`text-xl md:text-2xl font-serif font-bold tracking-tight whitespace-nowrap transition-colors duration-300 ${
